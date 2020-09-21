@@ -1,5 +1,5 @@
 # Hide private variables
-.env
+.*
 
 # Hide cache
 __pycache__/
