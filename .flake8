@@ -1,6 +1,9 @@
 [flake8]
+
+# This is just the way I code
 ignore = E251, E111, E305, E302, H202, H301, H306
 exclude =
   .git,
+  .vscode,
   __pycache__
   

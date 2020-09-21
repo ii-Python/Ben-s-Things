@@ -1,5 +1,6 @@
 # Hide private variables
-.*
+.env
+.git
 
 # Hide cache
 __pycache__/
