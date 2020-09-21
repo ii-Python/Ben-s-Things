@@ -25,7 +25,7 @@ def genImage():
     g = int(request.args.get("g", 255))
     b = int(request.args.get("b", 255))
 
-  except:
+  except ValueError:
 
     return "Invalid RGB value."
 
@@ -35,7 +35,7 @@ def genImage():
 
       font = file
 
-  if not font in listdir("assets/fonts"):
+  if font not in listdir("assets/fonts"):
 
     return "Invalid font."
 
@@ -52,7 +52,7 @@ def genImage():
     fontsize -= excess
 
   image = Image.new("RGBA", (1366, 70), color = (0, 0, 0, 0))
-  
+
   d = ImageDraw.Draw(image)
 
   d.text((10, 10), query, font = ImageFont.truetype(f"assets/fonts/{font}", fontsize), fill = (r, g, b))

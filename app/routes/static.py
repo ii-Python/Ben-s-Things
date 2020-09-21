@@ -7,7 +7,7 @@ from flask import send_from_directory, abort
 @app.route("/s/<string:file>")
 def staticfile(file):
 
-  if not file in listdir("app/static"):
+  if file not in listdir("app/static"):
 
     return abort(400)
 
@@ -16,11 +16,11 @@ def staticfile(file):
 @app.route("/s/<string:dir>/<string:file>")
 def staticfilefromdir(dir, file):
 
-  if not dir in listdir("app/static"):
+  if dir not in listdir("app/static"):
 
     return abort(400)
 
-  elif not file in listdir(f"app/static/{dir}"):
+  elif file not in listdir(f"app/static/{dir}"):
 
     return abort(400)
 
@@ -29,15 +29,15 @@ def staticfilefromdir(dir, file):
 @app.route("/s/<string:dir>/<string:dir2>/<string:file>")
 def staticfilefromtwodirs(dir, dir2, file):
 
-  if not dir in listdir("app/static"):
+  if dir not in listdir("app/static"):
 
     return abort(400)
 
-  elif not dir2 in listdir(f"app/static/{dir}"):
+  elif dir2 not in listdir(f"app/static/{dir}"):
 
     return abort(400)
 
-  elif not file in listdir(f"app/static/{dir}/{dir2}"):
+  elif file not in listdir(f"app/static/{dir}/{dir2}"):
 
     return abort(400)
 

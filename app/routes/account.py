@@ -8,7 +8,7 @@ from flask import render_template, session, request, abort, redirect, url_for, m
 @app.route("/account/")
 def account():
 
-  if not "username" in session:
+  if "username" not in session:
 
     return redirect(url_for("login"))
 
@@ -120,7 +120,7 @@ def logout():
 @app.route("/account/delete", methods = ["GET", "POST"])
 def delete_account():
 
-  if not "username" in session:
+  if "username" not in session:
 
     return redirect(url_for("login"))
 

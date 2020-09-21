@@ -26,14 +26,8 @@ class DB():
     def get_user_by_sha256(self, cipher):
 
         for row in self.cursor.execute("SELECT * FROM users"):
-            
-            try:
 
-                realcipher = sha256(row[1].encode("UTF-8")).hexdigest()
-
-            except:
-
-                return None
+            realcipher = sha256(row[1].encode("UTF-8")).hexdigest()
 
             if realcipher == cipher:
 
@@ -54,7 +48,7 @@ class DB():
     def checkpw(self, username, password):
 
         for row in self.cursor.execute("SELECT * FROM users"):
-            
+
             if row[0].lower() == username.lower():
 
                 act_pw = row[1].encode("UTF-8")
@@ -72,7 +66,7 @@ class DB():
     def gethash(self, username):
 
         for row in self.cursor.execute("SELECT * FROM users"):
-            
+
             if row[0].lower() == username.lower():
 
                 return row[1]

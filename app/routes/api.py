@@ -17,7 +17,7 @@ def get_weather(lon, lat):
 
   resp = get(f"{weather}lat={lat}&lon={lon}&exclude=hourly,daily&appid={getenv('OPENWEATHER')}").json()
 
-  if not "current" in resp:
+  if "current" not in resp:
 
     return return_data(400, {"message": "The specified coordinates are invalid."})
 
@@ -47,7 +47,7 @@ def startpage():
     ip = resp,
     round = round
   ), 200
-  
+
 # Routes
 @app.route("/api/<string:version>", methods = ["GET"])
 def redir(version):
@@ -61,7 +61,7 @@ def fetchdocs(version):
 
     return render_template(f"api/{version}.html"), 200
 
-  except:
+  except FileNotFoundError:
 
     return return_data(404, {"message": "The specified API version does not exist."}), 404
 
@@ -79,7 +79,7 @@ def getweather():
 
   w = get_weather(lon, lat)
 
-  return str(w), 200 if not "code" in dict(w) else dict(w)["code"]
+  return str(w), 200 if "code" not in dict(w) else dict(w)["code"]
 
 @app.route("/api/v1/oauth", methods = ["GET"])
 def login_api():
@@ -90,7 +90,7 @@ def login_api():
 
     abort(400)
 
-  elif not "username" in session:
+  elif "username" not in session:
 
     return redirect(url_for("login"))
 

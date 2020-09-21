@@ -17,4 +17,3 @@ def about():
 def gentext():
 
   return render_template("generators/text.html"), 200
-  
