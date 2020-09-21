@@ -9,4 +9,3 @@ reportlab
 flask-gzip
 python-dotenv
 flask-compress
-flask_talisman
