@@ -3,7 +3,7 @@ from os import urandom
 from flask import Flask
 
 from dotenv import load_dotenv
-from flask_seasurf import SeaSurf
+# man i need to get another import here
 
 from flask_compress import Compress
 from flask_talisman import Talisman
@@ -24,7 +24,6 @@ Compress(app)
 
 # Security setup
 Talisman(app, force_https = False)
-csrf = SeaSurf(app)
 
 # Gunicorn / WSGI Initialization
 application = app
