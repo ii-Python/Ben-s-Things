@@ -1,0 +1,12 @@
+flask
+pillow
+bcrypt
+svglib
+cairosvg
+requests
+reportlab
+flask-gzip
+python-dotenv
+flask_seasurf
+flask-compress
+flask_talisman

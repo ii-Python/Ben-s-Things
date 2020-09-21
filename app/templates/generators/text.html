@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+  <div class = "container">
+    <div class = "row justify-content-center">
+      <div class = "col-3">
+        <form action = "/text">
+          <div class = "form-group">
+            <label for = "textInput">Image Text</label>
+            <input type = "text" class = "form-control" id = "textInput" placeholder = "Enter some text..." name = "text" required>
+          </div>
+          <br>
+          <button type = "submit" class = "btn btn-outline-secondary btn-block">Generate!</button>
+        </form>
+      </div>
+    </div>
+  </div>
+
+{% endblock %}

@@ -1,0 +1,87 @@
+{% extends "api/api.html" %}
+
+{% block content %}
+
+  <!-- Docs -->
+  <h4>Showing docs for API v1</h4>
+  <br>
+  <p>This documentation covers how to make requests to the API, parse the response, and display images.</p>
+  <p>The following are true for every API response:</p>
+  <div>
+    <p>· The API data will be in the <code>data</code> attribute.</p>
+    <p>· The API will always return a valid HTTP status code with the request.</p>
+    <p>· The API will always return data in JSON format.</p>
+  </div>
+  <br>
+  <p>Click an endpoint to learn more about it.</p>
+  <div class = "endpoints">
+    <h5>
+      <a class = "endpnt-lnk text-light" data-toggle = "collapse" href = "#generate" role = "button" aria-expanded = "false" aria-controls = "generate">
+        /api/v1/generate
+        <span class = "badge badge-success">POST</span>
+      </a>
+    </h5>
+    <div class = "collapse" id = "generate">
+      <div class = "endpoint-data">
+        <p>Turns text into an image.</p>
+        <p>
+          Request: <code>{"text": "Hello, world!"}</code>
+          <br>
+          Response: <code>{"data": {"url": "https://ww..."}}</code>
+        </p>
+      </div>
+    </div>
+    <h5>
+      <a class = "endpnt-lnk text-light" data-toggle = "collapse" href = "#badge" role = "button" aria-expanded = "false" aria-controls = "badge">
+        /api/v1/badge
+        <span class = "badge badge-success">POST</span>
+      </a>
+    </h5>
+    <div class = "collapse" id = "badge">
+      <div class = "endpoint-data">
+        <p>Takes beginning text, ending text, and a color to transform into a badge.</p>
+        <p>
+          Request: <code>{"begin": "Hello,", "end": " world!", "color": "#126bf1"}</code>
+          <br>
+          Response: <code>{"data": {"url": "https://ww..."}}</code>
+        </p>
+      </div>
+    </div>
+    <h5>
+      <a class = "endpnt-lnk text-light" data-toggle = "collapse" href = "#oauth" role = "button" aria-expanded = "false" aria-controls = "oauth">
+        /api/v1/oauth
+        <span class = "badge badge-primary">GET</span>
+        <span class = "badge badge-danger">NO JSON</span>
+      </a>
+    </h5>
+    <div class = "collapse" id = "oauth">
+      <div class = "endpoint-data">
+        <p>Authorizes a user and redirects to the specified redirection url with an authorization code attached.</p>
+        <p>
+          Request: <code>/api/v1/oauth?redir=https://example.com</code>
+          <br>
+          Response (after redirect): <code>https://example.com?code=1234567890</code>
+        </p>
+      </div>
+    </div>
+    <h5>
+      <a class = "endpnt-lnk text-light" data-toggle = "collapse" href = "#user" role = "button" aria-expanded = "false" aria-controls = "user">
+        /api/v1/user
+        <span class = "badge badge-primary">GET</span>
+        <span class = "badge badge-warning">AUTH REQUIRED</span>
+      </a>
+    </h5>
+    <div class = "collapse" id = "user">
+      <div class = "endpoint-data">
+        <p>Returns JSON data relating to the authorized user.</p>
+        <p>Please note: <b>this endpoint requires an oauth code specified in the `auth` query string.</b></p>
+        <p>
+          Request: <code>/api/v1/user?auth=1234567890</code>
+          <br>
+          Response: <code>{"username":"iiPython","signupDate":"09-13-20"...</code>
+        </p>
+      </div>
+    </div>
+  </div>
+
+{% endblock %}

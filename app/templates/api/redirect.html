@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+  <h3>Hello, {{ session["username"] }}.</h3>
+  <h6>Make sure you trust the app before continuing.</h6>
+  <br>
+  <div style = "padding-top: 10px;"></div>
+  <div>
+    <a href = "{{ url }}?code={{ code }}" class = "btn btn-outline-secondary">Authorize Application</a>
+    <br>
+    <small class = "text-muted">This will redirect you to <code>{{ url }}</code>.</small>
+  </div>
+
+{% endblock %}

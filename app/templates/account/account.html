@@ -1,0 +1,13 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+    <h3>Hello, {{ session["username"] }}.</h3>
+    <h6>Please note: this page is a wip and may be changed.</h6>
+    <br>
+    <div style = "padding-top: 10px;"></div>
+    <div>
+        <a class = "btn btn-danger" href = "/account/delete">Delete Account</a>
+    </div>
+
+{% endblock %}

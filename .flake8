@@ -1,0 +1,6 @@
+[flake8]
+ignore = E251, E111, E305, E302, H202, H301, H306
+exclude =
+  .git,
+  __pycache__
+  

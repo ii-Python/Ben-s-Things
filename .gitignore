@@ -1,0 +1,8 @@
+# Hide private variables
+.env
+
+# Hide cache
+__pycache__/
+
+# Hide login information
+login.db

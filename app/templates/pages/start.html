@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang = "en">
+    <head>
+        <!-- Meta -->
+        <meta charset = "utf-8">
+        <meta name = "viewport" content = "width=device-width, initial-scale=1, shrink-to-fit=no">
+        <meta name = "theme-color" content = "#4285f4">
+
+        <!-- Discord Meta -->
+        <meta content = "Freshstart" property = "og:title">
+        <meta content = "Clean template for a start page." property = "og:description">
+        <meta content = "Ben's Site" property = "og:site_name">
+        <meta content = "/s/favicon.png" property = "og:image">
+
+        <!-- CSS -->
+        <link rel = "stylesheet" href = "/s/css/bootstrap.css">
+        <link rel = "stylesheet" href = "https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.14.0/css/all.min.css">
+
+        <style>body{background-color:#061e3e;font-family:Roboto,sans-serif}h1,h3{color:#fff}footer{position:fixed;left:0;bottom:0;color:#fff;padding-left:7px;padding-bottom:2px;user-select:none;cursor:text}.time{font-size:13vmin;font-weight:200;margin:0;transition:all .5s ease}.date{font-size:7vmin;font-weight:200;margin:0;transition:all .5s ease}.seperator{padding-top:25px}.form-box{margin-top:2em;padding-top:1.3em;margin-left:auto;margin-right:auto;display:inline-block;text-align:center;width:100%}input[type=text],input[type=text]:not(:focus){background:0 0;border:0;border-bottom:2px solid rgba(255,255,255,.7);color:#ddd;font-size:1.5em;outline:0;padding:.5em;transition:all .5s ease;width:17em;border-radius:0}input[type=text]:focus,input[type=text]:focus::placeholder{background:0 0;border-radius:0;color:#fff;transition:all .5s ease;width:22em}input[type=text]::placeholder{color:rgba(255,255,255,.4);transition:all .5s ease}input[type=text]:focus,input[type=text]:focus::-webkit-input-placeholder{color:rgba(255,255,255,.8);transition:all .5s ease}.cb-dpr{padding-left:5px}.cb-dpi{color:#6c757d}</style>
+
+        <!-- Misc -->
+        <link rel = "icon" type = "image/png" href = "/s/favicon.png">
+
+        <title>Welcome Back!</title>
+    </head>
+    <body>
+        <nav class = "navbar navbar-expand-lg navbar-light">
+            <div class = "collapse navbar-collapse">
+                <ul class = "navbar-nav mr-auto">
+                    <li class = "nav-item">
+                        <p class = "nav-link" style = "color: white !important; position: absolute; z-index: 10;">
+                            {{ ip["city"] }}, {{ ip["region"] }} <br>
+                            {{ round((weather["temp"] - 273.15) * 9/5 + 32) }}°F ({{ round(weather["temp"] - 273.15) }}°C) <br>
+                            {{ weather["weather"][0]["description"][0].upper() }}{{ weather["weather"][0]["description"][1:] }}
+                        </p>
+                    </li>
+                </ul>
+            </div>
+        </nav>
+        <div align = "center">
+            <div style = "padding-top: 100px;"></div>
+            <h1 class = "time" id = "time"> </h1>
+            <h3 class = "date" id = "date"> </h3>
+            <form onsubmit = "search(event)" action = "https://www.google.com/search" method = "POST" autocomplete = "off" class = "form-box" id = "formsearch">
+                <input type = "text" name = "q" size = "35" maxlength = "255" value = "" placeholder = "Search with Google or type URL" id = "forminput" autofocus>
+            </form>
+            <div class = "seperator"></div>
+        </div>
+        <footer onclick = "confetti.start(1200, 50, 150);">
+            <i class = "fab fa-discord footer-ico"></i>
+            iiPython#0768
+        </footer>
+    </body>
+
+    <!-- JS -->
+    <script src = "https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script>function validURL(t){return!!new RegExp("^(https?:\\/\\/)?((([a-z\\d]([a-z\\d-]*[a-z\\d])*)\\.)+[a-z]{2,}|((\\d{1,3}\\.){3}\\d{1,3}))(\\:\\d+)?(\\/[-a-z\\d%_.~+]*)*(\\?[;&a-z\\d%_.~+=-]*)?(\\#[-a-z\\d_]*)?$","i").test(t)}function search(t){t.preventDefault();const a=document.getElementById("forminput");if(a.value||a.value.length)return validURL(a.value)?(a.value.startsWith("https://")?a.value.startsWith("https://")||a.value.startsWith("http://")||(a.value=`http://${a.value}`):a.value=`https://${a.value}`,window.location.href=a.value):window.location.href=`https://google.com/search?q=${a.value}`}</script>
+
+    <!-- Relative JS -->
+    <script src = "/s/js/datetime.js"></script>
+    <script src = "/s/js/confetti.js"></script>
+</html>
