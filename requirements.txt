@@ -1,4 +1,5 @@
 flask
+flake8
 pillow
 bcrypt
 svglib
