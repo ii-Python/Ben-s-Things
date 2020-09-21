@@ -1,5 +1,5 @@
 # Modules
-from os import urandom
+from os import getenv
 from flask import Flask
 
 from dotenv import load_dotenv
@@ -14,7 +14,7 @@ app = Flask(
   template_folder = "app/templates"
 )
 
-app.secret_key = urandom(26)
+app.secret_key = getenv("SECRET_KEY")
 
 # Compressing / GZip
 Compress(app)
