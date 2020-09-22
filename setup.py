@@ -9,7 +9,7 @@ conn = sqlite3.connect("login.db")
 cursor = conn.cursor()
 
 # Setup tables
-cursor.execute("CREATE TABLE users (username text, password text, signup text)")
+cursor.execute("CREATE TABLE users (username text, password text, signup text, token text)")
 
 # Save
 conn.commit()
