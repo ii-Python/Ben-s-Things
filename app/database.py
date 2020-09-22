@@ -25,13 +25,11 @@ class DB():
 
         return False
 
-    def get_user_by_sha256(self, cipher):
+    def get_user_by_token(self, cipher):
 
         for row in self.cursor.execute("SELECT * FROM users"):
 
-            realcipher = sha256(row[1].encode("UTF-8")).hexdigest()
-
-            if realcipher == cipher:
+            if row[3] == cipher:
 
                 return row
 
