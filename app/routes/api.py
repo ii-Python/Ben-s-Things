@@ -3,11 +3,9 @@ from app import app
 from os import getenv
 
 from requests import get
-from hashlib import sha256
-
 from app.database import DB
-from urllib.parse import urlparse
 
+from urllib.parse import urlparse
 from flask import render_template, redirect, url_for, jsonify, request, abort, session
 
 # Weather
@@ -96,7 +94,7 @@ def login_api():
 
   db = DB()
 
-  code = sha256(db.gethash(session["username"]).encode("UTF-8")).hexdigest()
+  code = db.get_token(session["username"])
 
   return render_template(
     "api/redirect.html",
