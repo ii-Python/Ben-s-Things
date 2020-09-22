@@ -4,6 +4,7 @@
 
 # Hide cache
 __pycache__/
+*.pyc
 
 # Hide login information
 login.db
