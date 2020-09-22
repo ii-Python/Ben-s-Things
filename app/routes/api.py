@@ -113,7 +113,7 @@ def userInformation():
 
   db = DB()
 
-  user = db.get_user_by_sha256(auth)
+  user = db.get_user_by_token(auth)
 
   if not user:
 
