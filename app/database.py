@@ -1,8 +1,10 @@
 # Modules
 import bcrypt
-import sqlite3
+import secrets
 
+import sqlite3
 from hashlib import sha256
+
 from datetime import datetime
 
 # Class
@@ -42,8 +44,10 @@ class DB():
     def register(self, username, password):
 
         hashed = bcrypt.hashpw(password.encode("UTF-8"), bcrypt.gensalt())
+        
+        token = secrets.token_urlsafe(75)
 
-        self.cursor.execute("INSERT INTO users VALUES (?,?,?)", (username, hashed.decode("UTF-8"), datetime.now().strftime("%D")))
+        self.cursor.execute("INSERT INTO users VALUES (?,?,?,?)", (username, hashed.decode("UTF-8"), datetime.now().strftime("%D"), token))
 
     def checkpw(self, username, password):
 
@@ -71,6 +75,16 @@ class DB():
 
                 return row[1]
 
+        return None
+    
+    def get_token(self, username):
+        
+        for row in self.cursor.execute("SELECT * FROM users"):
+
+            if row[0].lower() == username.lower():
+                
+                return row[3]
+            
         return None
 
     def close(self):
