@@ -121,7 +121,7 @@ def userInformation():
 
   return jsonify(username = user[0], signupDate = user[2])
 
-@app.route("/api/v1/authenticate, methods = ["POST"])
+@app.route("/api/v1/authenticate", methods = ["POST"])
 def authenticateUser():
            
   username = request.form.get("username")
