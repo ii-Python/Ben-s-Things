@@ -123,25 +123,25 @@ def userInformation():
 
 @app.route("/api/v1/authenticate", methods = ["POST"])
 def authenticateUser():
-           
+
   username = request.form.get("username")
-           
+
   password = request.form.get("password")
-           
+
   if not username or not password:
-           
+
     return return_data(400, {"message": "Username/password missing from request."}), 400
-           
+
   db = DB()
-           
+
   if not db.user_exists(username):
-           
+
     return return_data(403, {"message": "The specified username does not exist."}), 403
-           
+
   elif not db.checkpw(username, password):
-           
+
     return return_data(403, {"message": "The specified password is invalid."}), 403
-           
+
   return return_data(200, {"message": "200 OK"}), 200
 
 @app.route("/api/v1/generate", methods = ["POST"])
