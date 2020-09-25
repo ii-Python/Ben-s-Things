@@ -23,4 +23,4 @@ Compress(app)
 application = app
 
 # Routes
-from app.routes import public, static, generators, api, account, errors
+from app.routes import public, static, generators, api, account, errors, uploading
