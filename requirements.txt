@@ -3,6 +3,7 @@ flake8
 pillow
 bcrypt
 svglib
+gunicorn
 cairosvg
 requests
 reportlab
