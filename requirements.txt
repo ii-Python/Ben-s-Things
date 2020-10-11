@@ -3,10 +3,9 @@ flake8
 pillow
 bcrypt
 svglib
-gunicorn
+waitress
 cairosvg
 requests
 reportlab
 flask-gzip
 python-dotenv
-flask-compress

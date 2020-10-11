@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+    <h3>iiPython CLI</h3>
+    <h6>The ultimate method of interacting with my API and hosting service.</h6>
+    <br>
+    <div style = "padding-top: 10px;"></div>
+    <a class = "btn btn-outline-secondary" href = "/s/cli/{{ path }}" download>
+        <i class = "{{ icon }}"></i>
+        Download for {{ request.user_agent.platform[0].upper() }}{{ request.user_agent.platform[1:] }}
+    </a>
+
+{% endblock %}

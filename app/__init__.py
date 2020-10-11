@@ -2,8 +2,8 @@
 from os import getenv
 from flask import Flask
 
+from flask_gzip import Gzip
 from dotenv import load_dotenv
-from flask_compress import Compress
 
 # Load .env
 load_dotenv()
@@ -17,7 +17,7 @@ app = Flask(
 app.secret_key = getenv("SECRET_KEY")
 
 # Compressing / GZip
-Compress(app)
+Gzip(app)
 
 # Gunicorn / WSGI Initialization
 application = app

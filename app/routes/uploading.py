@@ -3,28 +3,23 @@ from app import app
 from flask import render_template, request, abort
 
 # Routes
-@app.route("/upload", methods = ["GET"])
-def upload():
+@app.route("/cli/download", methods = ["GET"])
+def download():
 
-  return render_template(
-    "uploading/dashboard.html",
-    request = request
-  ), 200
+  file_paths = {
+    "windows": "iipython_win64.exe"
+  }
 
-@app.route("/upload/cli/ping", methods = ["GET"])
+  icons = {
+    "windows": "fab fa-windows"
+  }
+
+  filepath = file_paths[request.user_agent.platform] if request.user_agent.platform in file_paths else file_paths["windows"]
+  icon = icons[request.user_agent.platform] if request.user_agent.platform in icons else icons["windows"]
+
+  return render_template("pages/download.html", path = filepath, icon = icon), 200
+
+@app.route("/cli/ping", methods = ["GET"])
 def cli_ping():
 
   return "200 OK", 200
-
-@app.route("/upload/cli/project", methods = ["POST"])
-def cli_getproject():
-
-  username = request.form.get("username")
-
-  project = request.form.get("name")
-
-  if not username or not project:
-
-    return abort(400)
-
-  return abort(403)  # temporary
