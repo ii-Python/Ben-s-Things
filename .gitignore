@@ -1,6 +1,6 @@
 # Hide private variables
 .env
-.git
+.git/
 
 # Hide cache
 __pycache__/
@@ -8,3 +8,6 @@ __pycache__/
 
 # Hide login information
 login.db
+
+# No need for .vscode
+.vscode/

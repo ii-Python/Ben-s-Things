@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+  <div class = "container">
+    <div class = "row justify-content-center">
+      <div class = "col-3">
+        <form action = "/embed">
+          <div class = "form-group">
+            <label for = "textInput">Embed Title</label>
+            <input type = "text" class = "form-control" id = "textInput" placeholder = "Enter some text..." name = "title">
+          </div>
+          <div class = "form-group">
+            <label for = "descInput">Embed Description</label>
+            <input type = "text" class = "form-control" id = "descInput" placeholder = "Enter some text..." name = "description">
+          </div>
+          <div class = "form-group">
+            <label for = "authorInput">Embed Author</label>
+            <input type = "text" class = "form-control" id = "authorInput" placeholder = "Enter some text..." name = "author">
+          </div>
+          <div class = "form-group">
+            <label for = "colorInput">Embed Color</label>
+            <input type = "text" class = "form-control" id = "colorInput" placeholder = "Enter a valid hex code..." name = "color">
+          </div>
+          <div class = "form-group">
+            <label for = "imgInput">Image URL</label>
+            <input type = "text" class = "form-control" id = "imgInput" placeholder = "Enter a valid image URL..." name = "image">
+          </div>
+          <br>
+          <button type = "submit" class = "btn btn-outline-secondary btn-block">Generate!</button>
+        </form>
+      </div>
+    </div>
+  </div>
+
+{% endblock %}

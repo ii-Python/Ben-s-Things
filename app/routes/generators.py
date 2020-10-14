@@ -8,8 +8,8 @@ from requests import get
 from svglib.svglib import svg2rlg
 from reportlab.graphics import renderPM
 
-from flask import make_response, request
 from PIL import Image, ImageDraw, ImageFont
+from flask import make_response, request, abort, render_template
 
 # Routes
 @app.route("/text")
@@ -27,7 +27,7 @@ def genImage():
 
   except ValueError:
 
-    return "Invalid RGB value."
+    return "Invalid RGB value.", 400
 
   for file in listdir("assets/fonts"):
 
@@ -37,7 +37,7 @@ def genImage():
 
   if font not in listdir("assets/fonts"):
 
-    return "Invalid font."
+    return "Invalid font.", 404
 
   fontsize = 45
 
@@ -47,7 +47,7 @@ def genImage():
 
     if excess > 300:
 
-      return "Payload too large, must be at most 360 characters."
+      return "Payload too large, must be at most 360 characters.", 400
 
     fontsize -= excess
 
@@ -87,3 +87,26 @@ def genBadge():
   response.headers.set("Content-Type", "image/png")
 
   return response, 200
+
+@app.route("/embed", methods = ["GET"])
+def generateEmbed():
+
+  return render_template("api/embed.html"), 200
+
+@app.route("/embed/generate", methods = ["GET"])
+def embedPage():
+
+  return render_template("generators/embed.html"), 200
+
+@app.route("/oembed", methods = ["GET"])
+def generateOEmbed():
+
+  author = request.args.get("author")
+
+  if not author:
+
+    return abort(400)
+
+  response = '{{"type":"photo","author_name":"{}"}}'
+
+  return response.format(author), 200
