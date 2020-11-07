@@ -31,21 +31,6 @@ def fetchdocs(version):
     return return_data(404, {"message": "The specified API version does not exist."}), 404
 
 # API Routes
-@app.route("/api/v1/weather", methods = ["GET"])
-def getweather():
-
-  lon = request.args.get("lon")
-
-  lat = request.args.get("lat")
-
-  if not lon or not lat:
-
-    abort(400)
-
-  w = get_weather(lon, lat)
-
-  return str(w), 200 if "code" not in dict(w) else dict(w)["code"]
-
 @app.route("/api/v1/oauth", methods = ["GET"])
 def login_api():
 
