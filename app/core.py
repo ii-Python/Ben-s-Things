@@ -1,5 +1,6 @@
 # Modules
 from os import getenv
+from requests import get
 from flask import session
 
 class Core(object):
