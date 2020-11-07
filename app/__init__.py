@@ -32,5 +32,5 @@ logging.getLogger("werkzeug").setLevel(logging.ERROR)
 # Routes
 from app.routes import (
   public, static, generators,
-  api, account, errors, uploading
+  api, account, errors
 )
