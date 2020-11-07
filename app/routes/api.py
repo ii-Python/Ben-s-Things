@@ -8,43 +8,10 @@ from app.database import DB
 from urllib.parse import urlparse
 from flask import render_template, redirect, url_for, jsonify, request, abort, session
 
-# Weather
-weather = "https://api.openweathermap.org/data/2.5/onecall?"
-
-def get_weather(lon, lat):
-
-  resp = get(f"{weather}lat={lat}&lon={lon}&exclude=hourly,daily&appid={getenv('OPENWEATHER')}").json()
-
-  if "current" not in resp:
-
-    return return_data(400, {"message": "The specified coordinates are invalid."})
-
-  current = resp["current"]
-
-  return current
-
 # Return
 def return_data(code, data):
 
   return jsonify(code = code, data = data)
-
-# Start page
-@app.route("/start", methods = ["GET"])
-def startpage():
-
-  resp = get(f"https://ipinfo.io/{request.headers.get('X-Forwarded-For')}/json?token={getenv('IPINFO')}").json()
-
-  location = resp["loc"].split(',')
-
-  lat = location[0]
-  lon = location[1]
-
-  return render_template(
-    "pages/start.html",
-    weather = get_weather(lon, lat),
-    ip = resp,
-    round = round
-  ), 200
 
 # Routes
 @app.route("/api/<string:version>", methods = ["GET"])
@@ -89,6 +56,8 @@ def login_api():
     abort(400)
 
   elif "username" not in session:
+
+    app.core.set_redirect("login_api", args = {"redir": redir})
 
     return redirect(url_for("login"))
 

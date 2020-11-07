@@ -1,4 +1,9 @@
 # iiPython.cf
-Personal website built using Flask and deployed with Gunicorn.
+### Just my little personal website.
+---
 
-ah don't you love the smell of cheese in the mornin'
+Make sure you install the dependencies: `python3 -m pip install -r requirements.txt`.
+
+To run this, use `python3 main.py`.
+
+If you want Flask debug mode enabled, `python3 main.py --debug`.

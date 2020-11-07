@@ -10,6 +10,8 @@ def account():
 
   if "username" not in session:
 
+    app.core.set_redirect("account")
+
     return redirect(url_for("login"))
 
   return render_template("account/account.html"), 200
@@ -55,6 +57,14 @@ def login():
   db.close()
 
   session["username"] = username
+
+  if "redirect" in session:
+
+    redir = session["redirect"]
+
+    del session["redirect"]
+
+    return redirect(url_for(redir["endpoint"], **redir["args"]))
 
   return redirect(url_for("index"))
 
