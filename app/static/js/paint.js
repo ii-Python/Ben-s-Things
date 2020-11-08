@@ -1,7 +1,34 @@
 const canvas = document.getElementById("paint");
 const context = canvas.getContext("2d");
 
-console.log("iiPython's Paint.js v1.03");
+console.log("iiPython's Paint.js v1.04");
+
+// Check if we got an image url
+const search = window.location.href.split("?")[1];
+
+if (search !== null) {
+
+    const params = new URLSearchParams(search);
+    const parameters = {};
+
+    for (let value of params.keys()) {
+        parameters[value] = params.get(value);
+    }
+
+    if ("image" in parameters) {
+
+        var imageURL = parameters["image"];
+
+        var image = new Image();
+        image.src = imageURL;
+
+        image.onload = function() {
+            context.drawImage(image, 0, 0);
+        }
+
+    }
+
+}
 
 // Mouse positioning
 function getMousePos(canvas, evt) {
