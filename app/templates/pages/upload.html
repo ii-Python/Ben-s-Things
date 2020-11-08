@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+    <div class = "container">
+        <div class = "row justify-content-center">
+            <div class = "col-3">
+                <form action = "/upload" method = "POST" enctype = "multipart/form-data">
+                    <div class = "form-group">
+                        <label for = "image">Select a file to upload</label>
+                        <input type = "file" class = "form-control" id = "image" name = "image" required>
+                    </div>
+                    <br>
+                    <button type = "submit" class = "btn btn-outline-secondary btn-block">Upload Image</button> <br>
+                    {% if error %}<p style = "color:red">{{ error }}</p>{% endif %}
+                </form>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}

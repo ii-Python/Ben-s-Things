@@ -11,6 +11,10 @@ if not exists("data"):
 
     mkdir("data")
 
+if not exists("data/images"):
+
+    mkdir("data/images")
+
 conn = sqlite3.connect("data/login.db")
 cursor = conn.cursor()
 

@@ -2,17 +2,17 @@
 import string
 from app import app
 
-from os import getenv
 from requests import get
-
 from random import choice
-from app.database import DB
 
+from app.database import DB
 from json import loads, dumps
+
+from os import getenv, listdir
 from urllib.parse import urlparse
 
 from werkzeug.urls import url_parse
-from flask import render_template, redirect, url_for, jsonify, request, abort, session
+from flask import render_template, redirect, url_for, jsonify, request, abort, session, send_from_directory
 
 # Return
 def return_data(code, data):
@@ -35,6 +35,66 @@ def fetchdocs(version):
     except FileNotFoundError:
 
         return return_data(404, {"message": "The specified API version does not exist."}), 404
+
+@app.route("/upload", methods = ["GET", "POST"])
+def upload_image():
+
+    if request.method == "GET":
+
+        return render_template("pages/upload.html"), 200
+
+    elif not request.files:
+
+        return abort(400)  # haha boomer
+
+    try:
+
+        image = request.files["image"]
+
+    except KeyError:
+
+        return abort(400)
+
+    is_valid = False
+
+    for ext in ["png", "jpeg", "jpg", "webp"]:
+
+        if image.filename.endswith(ext):
+
+            is_valid = True
+
+    if not is_valid:
+
+        return render_template("pages/upload.html", error = "Please only upload image files."), 200
+
+    id = "".join(choice(string.ascii_lowercase + string.digits) for _ in range(6))
+
+    image.save(f"data/images/{id}.{image.filename.split('.')[-1]}")
+
+    return redirect(url_for("image", i = id))
+
+@app.route("/image", methods = ["GET"])
+def image():
+
+    id = request.args.get("i")
+
+    if not id:
+
+        return abort(400)  # haha you still cant use my website properly
+
+    filename = ""
+
+    for file in listdir("data/images"):
+
+        if file.split(".")[0] == id:
+
+            filename = file
+
+    if not filename:
+
+        return abort(404)  # image doesnt exist
+
+    return send_from_directory("data/images", filename), 200
 
 # URL Shortener
 @app.route("/shortener", methods = ["GET", "POST"])
