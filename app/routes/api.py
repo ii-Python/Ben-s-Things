@@ -112,6 +112,10 @@ def shortener():
 
         return abort(400)  # haha loSER
 
+    elif "://" not in url:
+
+        url = "http://" + url
+
     # Load our current URLs
     with open("data/urls.json", "r") as f:
 
