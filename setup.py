@@ -7,7 +7,9 @@ from os import mkdir
 from os.path import exists
 
 # Initialization
-if not exists("data"): mkdir("data")
+if not exists("data"):
+
+    mkdir("data")
 
 conn = sqlite3.connect("data/login.db")
 cursor = conn.cursor()

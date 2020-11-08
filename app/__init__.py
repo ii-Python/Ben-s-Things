@@ -13,8 +13,8 @@ load_dotenv()
 
 # Initialization
 app = Flask(
-  "Ben's Things",
-  template_folder = "app/templates"
+    "Ben's Things",
+    template_folder = "app/templates"
 )
 
 app.secret_key = getenv("SECRET_KEY")
@@ -31,6 +31,6 @@ logging.getLogger("werkzeug").setLevel(logging.ERROR)
 
 # Routes
 from app.routes import (
-  public, static, generators,
-  api, account, errors
+    public, static, generators,
+    api, account, errors
 )

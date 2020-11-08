@@ -17,24 +17,24 @@ from flask import render_template, redirect, url_for, jsonify, request, abort, s
 # Return
 def return_data(code, data):
 
-  return jsonify(code = code, data = data)
+    return jsonify(code = code, data = data)
 
 # Routes
 @app.route("/api/<string:version>", methods = ["GET"])
 def redir(version):
 
-  return redirect(url_for("fetchdocs", version = version))
+    return redirect(url_for("fetchdocs", version = version))
 
 @app.route("/api/<string:version>/docs", methods = ["GET"])
 def fetchdocs(version):
 
-  try:
+    try:
 
-    return render_template(f"api/{version}.html"), 200
+        return render_template(f"api/{version}.html"), 200
 
-  except FileNotFoundError:
+    except FileNotFoundError:
 
-    return return_data(404, {"message": "The specified API version does not exist."}), 404
+        return return_data(404, {"message": "The specified API version does not exist."}), 404
 
 # URL Shortener
 @app.route("/shortener", methods = ["GET", "POST"])
@@ -76,7 +76,7 @@ def shortener():
 
     with open("data/urls.json", "w") as f:
 
-      f.write(dumps(urls, indent = 4))
+        f.write(dumps(urls, indent = 4))
 
     # Redirect to our homepage
     return redirect(url_for("index", message = f"URL Shortened! New URL: https://{url_parse(request.url).host}/{code}"))
@@ -84,155 +84,155 @@ def shortener():
 @app.route("/<string:url>")
 def shorturl(url):
 
-  # Load our current URLs
-  with open("data/urls.json", "r") as f:
+    # Load our current URLs
+    with open("data/urls.json", "r") as f:
 
-    urls = loads(f.read())
+        urls = loads(f.read())
 
-  # Nope, not a valid url
-  if not url in urls:
+    # Nope, not a valid url
+    if url not in urls:
 
-    return abort(404)
+        return abort(404)
 
-  # It's valid, so redirect us
-  return render_template("pages/redirect.html", url = urls[url]), 200
+    # It's valid, so redirect us
+    return render_template("pages/redirect.html", url = urls[url]), 200
 
 # API Routes
 @app.route("/api/v1/oauth", methods = ["GET"])
 def login_api():
 
-  redir = request.args.get("redir")
+    redir = request.args.get("redir")
 
-  if not redir:
+    if not redir:
 
-    abort(400)
+        abort(400)
 
-  elif "username" not in session:
+    elif "username" not in session:
 
-    app.core.set_redirect("login_api", args = {"redir": redir})
+        app.core.set_redirect("login_api", args = {"redir": redir})
 
-    return redirect(url_for("login"))
+        return redirect(url_for("login"))
 
-  db = DB()
+    db = DB()
 
-  code = db.get_token(session["username"])
+    code = db.get_token(session["username"])
 
-  return render_template(
-    "api/redirect.html",
-    url = redir,
-    code = code
-  ), 200
+    return render_template(
+        "api/redirect.html",
+        url = redir,
+        code = code
+    ), 200
 
 @app.route("/api/v1/user", methods = ["GET"])
 def userInformation():
 
-  auth = request.args.get("auth", request.args.get("code"))
+    auth = request.args.get("auth", request.args.get("code"))
 
-  if not auth:
+    if not auth:
 
-    return return_data(403, {"message": "No authorization provided."}), 403
+        return return_data(403, {"message": "No authorization provided."}), 403
 
-  db = DB()
+    db = DB()
 
-  user = db.get_user_by_token(auth)
+    user = db.get_user_by_token(auth)
 
-  if not user:
+    if not user:
 
-    return return_data(403, {"message": "Invalid authorization."}), 403
+        return return_data(403, {"message": "Invalid authorization."}), 403
 
-  return jsonify(username = user[0], signupDate = user[2])
+    return jsonify(username = user[0], signupDate = user[2])
 
 @app.route("/api/v1/authenticate", methods = ["POST"])
 def authenticateUser():
 
-  username = request.form.get("username")
+    username = request.form.get("username")
 
-  password = request.form.get("password")
+    password = request.form.get("password")
 
-  if not username or not password:
+    if not username or not password:
 
-    return return_data(400, {"message": "Username/password missing from request."}), 400
+        return return_data(400, {"message": "Username/password missing from request."}), 400
 
-  db = DB()
+    db = DB()
 
-  if not db.user_exists(username):
+    if not db.user_exists(username):
 
-    return return_data(403, {"message": "The specified username does not exist."}), 403
+        return return_data(403, {"message": "The specified username does not exist."}), 403
 
-  elif not db.checkpw(username, password):
+    elif not db.checkpw(username, password):
 
-    return return_data(403, {"message": "The specified password is invalid."}), 403
+        return return_data(403, {"message": "The specified password is invalid."}), 403
 
-  return return_data(200, {"message": "200 OK"}), 200
+    return return_data(200, {"message": "200 OK"}), 200
 
 @app.route("/api/v1/generate", methods = ["POST"])
 def generateImage():
 
-  text = request.form.get("text")
+    text = request.form.get("text")
 
-  font = request.form.get("font")
+    font = request.form.get("font")
 
-  if not text:
+    if not text:
 
-    return return_data(400, {"message": "No text was specified."}), 400
+        return return_data(400, {"message": "No text was specified."}), 400
 
-  for char in text:
+    for char in text:
 
-    if char in ["!", "*", "'", "(", ")", ",", ":", "@", "&", "=", "+", "$", ",", "/", "?", "#", "[", "]"]:
+        if char in ["!", "*", "'", "(", ")", ",", ":", "@", "&", "=", "+", "$", ",", "/", "?", "#", "[", "]"]:
 
-      return return_data(400, {"message": "The specified text contains invalid characters."}), 400
+            return return_data(400, {"message": "The specified text contains invalid characters."}), 400
 
-  url = f"/text?text={text}"
+    url = f"/text?text={text}"
 
-  if font:
+    if font:
 
-    if font not in ["thin", "bold", "italic", "regular", "black", "light", "medium"]:
+        if font not in ["thin", "bold", "italic", "regular", "black", "light", "medium"]:
 
-      return return_data(400, {"message": "The specified font does not exist."}), 400
+            return return_data(400, {"message": "The specified font does not exist."}), 400
 
-    url = url + "&font=" + font
+        url = url + "&font=" + font
 
-  url = "https://" + urlparse(request.base_url).hostname + url
+    url = "https://" + urlparse(request.base_url).hostname + url
 
-  return return_data(200, {"url": url}), 200
+    return return_data(200, {"url": url}), 200
 
 @app.route("/api/v1/badge", methods = ["POST"])
 def generateBadge():
 
-  begin = request.form.get("begin")
+    begin = request.form.get("begin")
 
-  ending = request.form.get("end")
+    ending = request.form.get("end")
 
-  color = request.form.get("color")
+    color = request.form.get("color")
 
-  if not begin or not ending:
+    if not begin or not ending:
 
-    return return_data(400, {"message": "No text was specified."}), 400
+        return return_data(400, {"message": "No text was specified."}), 400
 
-  for char in begin:
+    for char in begin:
 
-    if char in ["!", "*", "'", "(", ")", ",", ":", "@", "&", "=", "+", "$", ",", "/", "?", "#", "[", "]"]:
+        if char in ["!", "*", "'", "(", ")", ",", ":", "@", "&", "=", "+", "$", ",", "/", "?", "#", "[", "]"]:
 
-      return return_data(400, {"message": "The specified text contains invalid characters."}), 400
+            return return_data(400, {"message": "The specified text contains invalid characters."}), 400
 
-  for char in ending:
+    for char in ending:
 
-    if char in ["!", "*", "'", "(", ")", ",", ":", "@", "&", "=", "+", "$", ",", "/", "?", "#", "[", "]"]:
+        if char in ["!", "*", "'", "(", ")", ",", ":", "@", "&", "=", "+", "$", ",", "/", "?", "#", "[", "]"]:
 
-      return return_data(400, {"message": "The specified text contains invalid characters."}), 400
+            return return_data(400, {"message": "The specified text contains invalid characters."}), 400
 
-  if color.startswith("#"):
+    if color.startswith("#"):
 
-    color = color[1:]
+        color = color[1:]
 
-  for char in color:
+    for char in color:
 
-    if char in ["!", "*", "'", "(", ")", ",", ":", "@", "&", "=", "+", "$", ",", "/", "?", "#", "[", "]"]:
+        if char in ["!", "*", "'", "(", ")", ",", ":", "@", "&", "=", "+", "$", ",", "/", "?", "#", "[", "]"]:
 
-      return return_data(400, {"message": "The specified color contains invalid characters."}), 400
+            return return_data(400, {"message": "The specified color contains invalid characters."}), 400
 
-  url = f"/badge?b={begin}&e={ending}&color={color}"
+    url = f"/badge?b={begin}&e={ending}&color={color}"
 
-  url = "https://" + urlparse(request.base_url).hostname + url
+    url = "https://" + urlparse(request.base_url).hostname + url
 
-  return return_data(200, {"url": url}), 200
+    return return_data(200, {"url": url}), 200

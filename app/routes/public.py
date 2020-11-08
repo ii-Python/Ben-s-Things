@@ -37,12 +37,12 @@ def startpage():
 
     if "loc" in resp:
 
-      location = resp["loc"].split(',')
+        location = resp["loc"].split(',')
 
-      lat = location[0]
-      lon = location[1]
+        lat = location[0]
+        lon = location[1]
 
-      weather = app.core.get_weather(lon, lat)
+        weather = app.core.get_weather(lon, lat)
 
     # Render the template :)
     return render_template(
