@@ -1,11 +1,17 @@
 # Modules
+import string
 from app import app
-from os import getenv
 
+from os import getenv
 from requests import get
+
+from random import choice
 from app.database import DB
 
+from json import loads, dumps
 from urllib.parse import urlparse
+
+from werkzeug.urls import url_parse
 from flask import render_template, redirect, url_for, jsonify, request, abort, session
 
 # Return
@@ -29,6 +35,67 @@ def fetchdocs(version):
   except FileNotFoundError:
 
     return return_data(404, {"message": "The specified API version does not exist."}), 404
+
+# URL Shortener
+@app.route("/shortener", methods = ["GET", "POST"])
+def shortener():
+
+    # Render our shortener page
+    if request.method == "GET":
+
+        return render_template("pages/shortener.html"), 200
+
+    # Let's do some shortening
+    url = request.form.get("url")
+
+    if not url:
+
+        return abort(400)  # haha loSER
+
+    # Load our current URLs
+    with open("data/urls.json", "r") as f:
+
+        urls = loads(f.read())
+
+    # Check if we already shortened this URL
+    code = None
+
+    for _ in urls:
+
+        if urls[_] == url:
+
+            code = _
+
+    # Nope, we need to make a code
+    if not code:
+
+        code = "".join(choice(string.ascii_lowercase + string.digits) for _ in range(6))
+
+    # Save our URL
+    urls[code] = url
+
+    with open("data/urls.json", "w") as f:
+
+      f.write(dumps(urls, indent = 4))
+
+    # Redirect to our homepage
+    return redirect(url_for("index", message = f"URL Shortened! New URL: https://{url_parse(request.url).host}/{code}"))
+
+@app.route("/<string:url>")
+def shorturl(url):
+
+  # Load our current URLs
+  with open("data/urls.json", "r") as f:
+
+    urls = loads(f.read())
+
+  # Nope, not a valid url
+  if not url in urls:
+
+    return abort(404)
+
+  # It's valid, so redirect us
+  return render_template("pages/redirect.html", url = urls[url]), 200
 
 # API Routes
 @app.route("/api/v1/oauth", methods = ["GET"])

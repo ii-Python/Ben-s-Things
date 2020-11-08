@@ -7,7 +7,7 @@ __pycache__/
 *.pyc
 
 # Hide login information
-login.db
+data/
 
 # No need for .vscode
 .vscode/

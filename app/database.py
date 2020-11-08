@@ -12,7 +12,7 @@ class DB():
 
     def __init__(self):
 
-        self.conn = sqlite3.connect("login.db")
+        self.conn = sqlite3.connect("data/login.db")
         self.cursor = self.conn.cursor()
 
     def user_exists(self, username):

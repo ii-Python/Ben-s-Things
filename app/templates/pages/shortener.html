@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+  <div class = "container">
+    <div class = "row justify-content-center">
+      <div class = "col-3">
+        <form action = "/shortener" method = "POST">
+          <div class = "form-group">
+            <label for = "urlInput">Long URL</label>
+            <input type = "text" class = "form-control" id = "urlInput" placeholder = "Enter an URL to shorten..." name = "url" required>
+          </div>
+          <br>
+          <button type = "submit" class = "btn btn-outline-secondary btn-block">Shorten URL</button>
+        </form>
+      </div>
+    </div>
+  </div>
+
+{% endblock %}

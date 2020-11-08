@@ -3,15 +3,29 @@
 
 # Modules
 import sqlite3
+from os import mkdir
+from os.path import exists
 
 # Initialization
-conn = sqlite3.connect("login.db")
+if not exists("data"): mkdir("data")
+
+conn = sqlite3.connect("data/login.db")
 cursor = conn.cursor()
 
 # Setup tables
-cursor.execute("CREATE TABLE users (username text, password text, signup text, token text)")
+cursor.execute("""
+CREATE TABLE IF NOT EXISTS users (
+    username text,
+    password text,
+    signup text,
+    token text
+)
+""")
 
 # Save
 conn.commit()
 
 conn.close()
+
+# Create our URL database too
+open("data/urls.json", "w+").write("{}")
