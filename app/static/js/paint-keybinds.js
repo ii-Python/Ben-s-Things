@@ -21,6 +21,16 @@ document.onkeydown = function(event) {
         }
     }
 
+    // Color changing
+    if (event.keyCode == 49) CURRENTCOLOR = "black";
+    if (event.keyCode == 50) CURRENTCOLOR = "#00008B";
+    if (event.keyCode == 51) CURRENTCOLOR = "#0091EA";
+    if (event.keyCode == 52) CURRENTCOLOR = "#FF0081";
+    if (event.keyCode == 53) CURRENTCOLOR = "#329932";
+    if (event.keyCode == 54) CURRENTCOLOR = "#FFFF00";
+    if (event.keyCode == 55) CURRENTCOLOR = "#FF0000";
+    if (event.keyCode == 56) CURRENTCOLOR = "#4C0000";    
+
     // Keybinds
     if (!CTRLDOWN) return;
 
