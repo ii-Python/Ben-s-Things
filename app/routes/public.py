@@ -50,3 +50,8 @@ def startpage():
         weather = weather,
         ip = resp
     ), 200
+
+@app.route("/texty")
+def texty():
+
+    return render_template("pages/writer.html"), 200
