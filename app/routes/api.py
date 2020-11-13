@@ -204,7 +204,7 @@ def userInformation():
 
         return return_data(403, {"message": "Invalid authorization."}), 403
 
-    return jsonify(username = user[0], signupDate = user[2])
+    return jsonify(username = user[0], signupDate = user[3], email = user[2]), 200
 
 @app.route("/api/v1/authenticate", methods = ["POST"])
 def authenticateUser():

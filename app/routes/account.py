@@ -1,5 +1,7 @@
 # Modules
+import secrets
 from app import app
+
 from app.database import DB
 from flask import render_template, session, request, abort, redirect, url_for, make_response
 
@@ -80,18 +82,25 @@ def register():
         return render_template("pages/register.html"), 200
 
     username = request.form.get("id")
-
+    email = request.form.get("email")
     password = request.form.get("password")
 
     if request.args.get("redir"):
 
         session["redir"] = request.args.get("redir")
 
-    if not username or not password:
+    if not username or not password or not email:
 
         return render_template(
             "pages/register.html",
             error = "Please fill out all fields."
+        ), 400
+
+    elif not len(email) > 5 or not "@" in email:
+
+        return render_template(
+            "pages/register.html",
+            error = "Please enter a valid email."
         ), 400
 
     elif len(password) < 6:
@@ -110,7 +119,7 @@ def register():
             error = "The specified username is already taken."
         ), 400
 
-    db.register(username, password)
+    db.register(username, password, email)
 
     db.close()
 

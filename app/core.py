@@ -3,6 +3,7 @@ from os import getenv
 from requests import get
 from flask import session
 
+# Master class
 class Core(object):
 
     def __init__(self):

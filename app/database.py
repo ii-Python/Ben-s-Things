@@ -29,9 +29,19 @@ class DB():
 
         for row in self.cursor.execute("SELECT * FROM users"):
 
-            if row[3] == cipher:
+            if row[4] == cipher:
 
                 return row
+
+        return None
+
+    def get_user_by_email(self, email):
+
+        for row in self.cursor.execute("SELECT * FROM users"):
+
+            if row[2] == email:
+
+                return row[0]
 
         return None
 
@@ -39,13 +49,13 @@ class DB():
 
         self.cursor.execute("DELETE FROM users WHERE username=?", (username,))
 
-    def register(self, username, password):
+    def register(self, username, password, email):
 
         hashed = bcrypt.hashpw(password.encode("UTF-8"), bcrypt.gensalt())
 
         token = secrets.token_urlsafe(75)
 
-        self.cursor.execute("INSERT INTO users VALUES (?,?,?,?)", (username, hashed.decode("UTF-8"), datetime.now().strftime("%D"), token))
+        self.cursor.execute("INSERT INTO users VALUES (?,?,?,?,?)", (username, hashed.decode("UTF-8"), email, datetime.now().strftime("%D"), token))
 
     def checkpw(self, username, password):
 
@@ -81,7 +91,7 @@ class DB():
 
             if row[0].lower() == username.lower():
 
-                return row[3]
+                return row[4]
 
         return None
 
