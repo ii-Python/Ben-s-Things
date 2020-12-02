@@ -56,19 +56,14 @@ def upload_image():
         return abort(400)
 
     is_valid = False
-
     for ext in ["png", "jpeg", "jpg", "webp"]:
-
         if image.filename.endswith(ext):
-
             is_valid = True
 
     if not is_valid:
-
         return render_template("pages/upload.html", error = "Please only upload image files."), 200
 
     id = "".join(choice(string.ascii_lowercase + string.digits) for _ in range(6))
-
     image.save(f"data/images/{id}.{image.filename.split('.')[-1]}")
 
     return redirect(url_for("image", i = id))
@@ -79,19 +74,14 @@ def image():
     id = request.args.get("i")
 
     if not id:
-
         return abort(400)  # haha you still cant use my website properly
 
     filename = ""
-
     for file in listdir("data/images"):
-
         if file.split(".")[0] == id:
-
             filename = file
 
     if not filename:
-
         return abort(404)  # image doesnt exist
 
     return send_from_directory("data/images", filename), 200
@@ -178,7 +168,6 @@ def login_api():
         return redirect(url_for("login"))
 
     db = DB()
-
     code = db.get_token(session["username"])
 
     return render_template(
@@ -193,18 +182,15 @@ def userInformation():
     auth = request.args.get("auth", request.args.get("code"))
 
     if not auth:
-
         return return_data(403, {"message": "No authorization provided."}), 403
 
     db = DB()
-
     user = db.get_user_by_token(auth)
 
     if not user:
-
         return return_data(403, {"message": "Invalid authorization."}), 403
 
-    return jsonify(username = user[0], signupDate = user[3], email = user[2]), 200
+    return jsonify(username = user[0], signupDate = user[2]), 200
 
 @app.route("/api/v1/authenticate", methods = ["POST"])
 def authenticateUser():

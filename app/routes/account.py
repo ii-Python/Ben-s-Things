@@ -11,9 +11,7 @@ from flask import render_template, session, request, abort, redirect, url_for, m
 def account():
 
     if "username" not in session:
-
         app.core.set_redirect("account")
-
         return redirect(url_for("login"))
 
     return render_template("account/account.html"), 200
@@ -24,17 +22,14 @@ def login():
     if request.method == "GET":
 
         if "username" in session:
-
             return redirect(url_for("index"))
 
         return render_template("pages/login.html"), 200
 
     username = request.form.get("id")
-
     password = request.form.get("password")
 
     if not username or not password:
-
         return render_template(
             "pages/login.html",
             error = "Please fill out all fields."
@@ -61,11 +56,8 @@ def login():
     session["username"] = username
 
     if "redirect" in session:
-
         redir = session["redirect"]
-
         del session["redirect"]
-
         return redirect(url_for(redir["endpoint"], **redir["args"]))
 
     return redirect(url_for("index"))
@@ -82,25 +74,16 @@ def register():
         return render_template("pages/register.html"), 200
 
     username = request.form.get("id")
-    email = request.form.get("email")
     password = request.form.get("password")
 
     if request.args.get("redir"):
-
         session["redir"] = request.args.get("redir")
 
-    if not username or not password or not email:
+    if not username or not password:
 
         return render_template(
             "pages/register.html",
             error = "Please fill out all fields."
-        ), 400
-
-    elif not len(email) > 5 or not "@" in email:
-
-        return render_template(
-            "pages/register.html",
-            error = "Please enter a valid email."
         ), 400
 
     elif len(password) < 6:
@@ -119,20 +102,17 @@ def register():
             error = "The specified username is already taken."
         ), 400
 
-    db.register(username, password, email)
-
+    db.register(username, password)
     db.close()
 
     session["username"] = username
-
     return redirect(url_for("index"))
 
 @app.route("/logout")
 def logout():
 
     if "username" in session:
-
-        session.pop("username")
+        del session["username"]
 
     return redirect(url_for("index"))
 
@@ -140,19 +120,14 @@ def logout():
 def delete_account():
 
     if "username" not in session:
-
         return redirect(url_for("login"))
 
     elif request.method == "POST":
 
         db = DB()
-
         db.delete_user(session["username"])
-
         db.close()
 
-        session.pop("username")
-
-        return redirect(url_for("index"))
+        return redirect(url_for("logout"))
 
     return render_template("account/delete.html"), 200

@@ -18,9 +18,7 @@ class DB():
     def user_exists(self, username):
 
         for row in self.cursor.execute("SELECT * FROM users"):
-
             if row[0].lower() == username.lower():
-
                 return True
 
         return False
@@ -28,20 +26,8 @@ class DB():
     def get_user_by_token(self, cipher):
 
         for row in self.cursor.execute("SELECT * FROM users"):
-
-            if row[4] == cipher:
-
+            if row[3] == cipher:
                 return row
-
-        return None
-
-    def get_user_by_email(self, email):
-
-        for row in self.cursor.execute("SELECT * FROM users"):
-
-            if row[2] == email:
-
-                return row[0]
 
         return None
 
@@ -49,26 +35,22 @@ class DB():
 
         self.cursor.execute("DELETE FROM users WHERE username=?", (username,))
 
-    def register(self, username, password, email):
+    def register(self, username, password):
 
         hashed = bcrypt.hashpw(password.encode("UTF-8"), bcrypt.gensalt())
-
         token = secrets.token_urlsafe(75)
 
-        self.cursor.execute("INSERT INTO users VALUES (?,?,?,?,?)", (username, hashed.decode("UTF-8"), email, datetime.now().strftime("%D"), token))
+        self.cursor.execute("INSERT INTO users VALUES (?,?,?,?)", (username, hashed.decode("UTF-8"), datetime.now().strftime("%D"), token))
 
     def checkpw(self, username, password):
 
         for row in self.cursor.execute("SELECT * FROM users"):
-
             if row[0].lower() == username.lower():
 
                 act_pw = row[1].encode("UTF-8")
-
                 password = password.encode("UTF-8")
 
                 if bcrypt.checkpw(password, act_pw):
-
                     return True
 
                 break
@@ -78,9 +60,7 @@ class DB():
     def gethash(self, username):
 
         for row in self.cursor.execute("SELECT * FROM users"):
-
             if row[0].lower() == username.lower():
-
                 return row[1]
 
         return None
@@ -88,15 +68,12 @@ class DB():
     def get_token(self, username):
 
         for row in self.cursor.execute("SELECT * FROM users"):
-
             if row[0].lower() == username.lower():
-
-                return row[4]
+                return row[3]
 
         return None
 
     def close(self):
 
         self.conn.commit()
-
         self.conn.close()
