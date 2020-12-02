@@ -4,10 +4,11 @@
 
 # Hide cache
 __pycache__/
-*.pyc
 
 # Hide login information
 data/
 
-# No need for .vscode
+# No need for IDE stuff
 .vscode/
+.idea/
+venv/
