@@ -1,0 +1,39 @@
+body {
+    background-color: #061E3E;
+}
+footer {
+    left: 0;
+    bottom: 0;
+    color: #FFF;
+    position: fixed;
+    padding-left: 7px;
+    user-select: none;
+    padding-bottom: 2px;
+}
+footer a {
+    float: left;
+    cursor: pointer;
+    padding-right: 7px;
+}
+i {
+    color: white;
+}
+i:hover {
+    color: #999;
+}
+.seperator {
+    padding-top: 25px;
+}
+.master {
+    padding-top: 10px;
+    color: #FFF;
+}
+.dropdown-menu {
+    background-color: #6C757D;
+}
+.dropdown-link {
+    color: #333;
+}
+.dropdown-divider {
+    border-top: 1px solid #343A40
+}
