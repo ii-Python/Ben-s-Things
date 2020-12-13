@@ -24,14 +24,14 @@ def login():
         if "username" in session:
             return redirect(url_for("index"))
 
-        return render_template("pages/login.html"), 200
+        return render_template("account/login.html"), 200
 
     username = request.form.get("id")
     password = request.form.get("password")
 
     if not username or not password:
         return render_template(
-            "pages/login.html",
+            "account/login.html",
             error = "Please fill out all fields."
         ), 400
 
@@ -40,14 +40,14 @@ def login():
     if not db.user_exists(username):
 
         return render_template(
-            "pages/login.html",
+            "account/login.html",
             error = "No records match that username."
         ), 400
 
     elif not db.checkpw(username, password):
 
         return render_template(
-            "pages/login.html",
+            "account/login.html",
             error = "Invalid password."
         ), 403
 
@@ -71,7 +71,7 @@ def register():
 
             return redirect(url_for("index"))
 
-        return render_template("pages/register.html"), 200
+        return render_template("account/register.html"), 200
 
     username = request.form.get("id")
     password = request.form.get("password")
@@ -82,14 +82,14 @@ def register():
     if not username or not password:
 
         return render_template(
-            "pages/register.html",
+            "account/register.html",
             error = "Please fill out all fields."
         ), 400
 
     elif len(password) < 6:
 
         return render_template(
-            "pages/register.html",
+            "account/register.html",
             error = "Password needs to be at least 6 characters."
         ), 400
 
@@ -98,7 +98,7 @@ def register():
     if db.user_exists(username):
 
         return render_template(
-            "pages/register.html",
+            "account/register.html",
             error = "The specified username is already taken."
         ), 400
 

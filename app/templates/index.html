@@ -2,30 +2,24 @@
 
 {% block content %}
 
-  <h3>Hello.</h3>
-  <h6>This is the place where I host image generation tools<br>and unique endpoints for my friends (and myself).</h6>
+  <h3>Ben's Things</h3>
+  <h6>The place where I host endpoints for testing and development.</h6>
   <br>
   <div style = "padding-top: 10px;"></div>
   <div id = "examples">
-    <p>Some quick endpoint examples:</p>
+    <p>Example endpoints:</p>
 
-    <!-- text generator -->
+    <!-- Text generator -->
     <a class = "btn btn-outline-secondary" href = "/generate">
       <i class = "fas fa-file-alt"></i>
       Text Generator
     </a>
 
-    <!-- badge generator -->
-    <a class = "btn btn-outline-secondary" href = "/badge?b=Some%20text&e=and%20more&color=000000">
+    <!-- Badge generator -->
+    <a class = "btn btn-outline-secondary" href = "/badge/generate">
       <i class = "fas fa-id-card"></i>
       Badge Generator
     </a>
-
-    <!-- they don't have JS enabled :( -->
-    <noscript>
-      <br>
-      Sorry, you need to have JS enabled to test these.
-    </noscript>
   </div>
 
 {% endblock %}

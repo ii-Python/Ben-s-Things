@@ -171,7 +171,7 @@ def login_api():
     code = db.get_token(session["username"])
 
     return render_template(
-        "api/redirect.html",
+        "api/oauth.html",
         url = redir,
         code = code
     ), 200
@@ -200,17 +200,14 @@ def authenticateUser():
     password = request.form.get("password")
 
     if not username or not password:
-
         return return_data(400, {"message": "Username/password missing from request."}), 400
 
     db = DB()
 
     if not db.user_exists(username):
-
         return return_data(403, {"message": "The specified username does not exist."}), 403
 
     elif not db.checkpw(username, password):
-
         return return_data(403, {"message": "The specified password is invalid."}), 403
 
     return return_data(200, {"message": "200 OK"}), 200
@@ -219,70 +216,52 @@ def authenticateUser():
 def generateImage():
 
     text = request.form.get("text")
-
     font = request.form.get("font")
 
     if not text:
-
         return return_data(400, {"message": "No text was specified."}), 400
 
     for char in text:
-
         if char in ["!", "*", "'", "(", ")", ",", ":", "@", "&", "=", "+", "$", ",", "/", "?", "#", "[", "]"]:
-
             return return_data(400, {"message": "The specified text contains invalid characters."}), 400
 
     url = f"/text?text={text}"
 
     if font:
-
         if font not in ["thin", "bold", "italic", "regular", "black", "light", "medium"]:
-
             return return_data(400, {"message": "The specified font does not exist."}), 400
 
         url = url + "&font=" + font
 
     url = "https://" + urlparse(request.base_url).hostname + url
-
     return return_data(200, {"url": url}), 200
 
 @app.route("/api/v1/badge", methods = ["POST"])
 def generateBadge():
 
     begin = request.form.get("begin")
-
     ending = request.form.get("end")
-
     color = request.form.get("color")
 
     if not begin or not ending:
-
         return return_data(400, {"message": "No text was specified."}), 400
 
     for char in begin:
-
         if char in ["!", "*", "'", "(", ")", ",", ":", "@", "&", "=", "+", "$", ",", "/", "?", "#", "[", "]"]:
-
             return return_data(400, {"message": "The specified text contains invalid characters."}), 400
 
     for char in ending:
-
         if char in ["!", "*", "'", "(", ")", ",", ":", "@", "&", "=", "+", "$", ",", "/", "?", "#", "[", "]"]:
-
             return return_data(400, {"message": "The specified text contains invalid characters."}), 400
 
     if color.startswith("#"):
-
         color = color[1:]
 
     for char in color:
-
         if char in ["!", "*", "'", "(", ")", ",", ":", "@", "&", "=", "+", "$", ",", "/", "?", "#", "[", "]"]:
-
             return return_data(400, {"message": "The specified color contains invalid characters."}), 400
 
     url = f"/badge?b={begin}&e={ending}&color={color}"
-
     url = "https://" + urlparse(request.base_url).hostname + url
 
     return return_data(200, {"url": url}), 200

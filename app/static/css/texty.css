@@ -15,10 +15,3 @@ textarea:focus {
     outline: none;
     box-shadow: none;
 }
-#info {
-    width: 97%;
-    height: 30px;
-    opacity: 45%;
-    text-align: right;
-    position: absolute;
-}

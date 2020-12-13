@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+  <div class = "container">
+    <div class = "row justify-content-center">
+      <div class = "col-3">
+        <form action = "/badge">
+          <div class = "form-group">
+            <label for = "textInput">Badge Title</label>
+            <input type = "text" class = "form-control" id = "textInput" placeholder = "Enter some text..." name = "title" required>
+          </div>
+          <div class = "form-group">
+            <label for = "descInput">Badge Content</label>
+            <input type = "text" class = "form-control" id = "descInput" placeholder = "Enter some text..." name = "description" required>
+          </div>
+          <div class = "form-group">
+            <label for = "colorInput">Title Color</label>
+            <input type = "text" class = "form-control" id = "colorInput" placeholder = "Enter a valid hex code..." name = "color" required>
+          </div>
+          <br>
+          <button type = "submit" class = "btn btn-outline-secondary btn-block">Generate!</button>
+        </form>
+      </div>
+    </div>
+  </div>
+
+{% endblock %}
