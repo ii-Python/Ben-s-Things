@@ -2,10 +2,7 @@ flask
 flake8
 pillow
 bcrypt
-svglib
 waitress
-cairosvg
 requests
-reportlab
 flask-gzip
 python-dotenv

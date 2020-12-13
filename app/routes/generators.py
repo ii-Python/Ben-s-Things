@@ -5,9 +5,6 @@ from app import app
 from os import listdir
 from requests import get
 
-from svglib.svglib import svg2rlg
-from reportlab.graphics import renderPM
-
 from PIL import Image, ImageDraw, ImageFont
 from flask import make_response, request, abort, render_template
 
@@ -33,11 +30,11 @@ def genImage():
     if font not in listdir("assets/fonts"):
         return "Invalid font.", 404
 
-    fontsize = 45
+    fontsize = 60
 
-    if len(query) > 60:
+    if len(query) > 30:
 
-        excess = len(query) - 60
+        excess = len(query) - 30
 
         if excess > 300:
             return "Payload too large, must be at most 360 characters.", 400
@@ -45,9 +42,15 @@ def genImage():
         fontsize -= excess
 
     # Image drawing
-    image = Image.new("RGBA", (1366, 70), color = (0, 0, 0, 0))
+    image = Image.new("RGBA", (1366, 80), color = (0, 0, 0, 0))
     d = ImageDraw.Draw(image)
-    d.text((10, 10), query, font = ImageFont.truetype(f"assets/fonts/{font}", fontsize), fill = (r, g, b))
+
+    try:
+        d.text((10, 10), query, font = ImageFont.truetype(f"assets/fonts/{font}", fontsize), fill = (r, g, b))
+    except OSError:
+
+        # Caused by spamming
+        return abort(400)
 
     # Image saving
     imgByteArr = io.BytesIO()
@@ -70,15 +73,8 @@ def genBadge():
     if color[0] == "#":
         color = color[1:]
 
-    # Create our bytes array
-    imgByteArr = io.BytesIO()
-    render = svg2rlg(io.BytesIO(get(f"https://img.shields.io/badge/{title}-{description}-{color}.svg", allow_redirects = True).content))
-
-    # Saving to temp file
-    renderPM.drawToFile(render, imgByteArr, fmt = "PNG")
-
     # Returning badge
-    response = make_response(imgByteArr.getvalue())
+    response = make_response(get(f"https://raster.shields.io/badge/{title}-{description}-{color}.png", allow_redirects = True).content)
     response.headers.set("Content-Type", "image/png")
 
     return response, 200
