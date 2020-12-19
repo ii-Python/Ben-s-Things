@@ -12,8 +12,8 @@ from os.path import exists
 if not exists("data"):
     mkdir("data")
 
-if not exists("data/images"):
-    mkdir("data/images")
+if not exists("data/files"):
+    mkdir("data/files")
 
 conn = sqlite3.connect("data/login.db")
 cursor = conn.cursor()

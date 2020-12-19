@@ -37,39 +37,33 @@ def fetchdocs(version):
         return return_data(404, {"message": "The specified API version does not exist."}), 404
 
 @app.route("/upload", methods = ["GET", "POST"])
-def upload_image():
+def upload_file():
 
     if request.method == "GET":
-
         return render_template("pages/upload.html"), 200
 
     elif not request.files:
-
         return abort(400)  # haha boomer
 
     try:
-
-        image = request.files["image"]
+        file = request.files["uploadfile"]
 
     except KeyError:
-
         return abort(400)
 
-    is_valid = False
-    for ext in ["png", "jpeg", "jpg", "webp"]:
-        if image.filename.endswith(ext):
-            is_valid = True
+    data = file.read()
+    size = len(data) / 1048576  # into megabytes
 
-    if not is_valid:
-        return render_template("pages/upload.html", error = "Please only upload image files."), 200
+    if size > 20:
+        return render_template("pages/upload.html", error = "Maximum upload size is 20 megabytes."), 200
 
     id = "".join(choice(string.ascii_lowercase + string.digits) for _ in range(6))
-    image.save(f"data/images/{id}.{image.filename.split('.')[-1]}")
+    open(f"data/files/{id}.{file.filename.split('.')[-1]}", "wb").write(data)
 
-    return redirect(url_for("image", i = id))
+    return redirect(url_for("view_file", i = id))
 
-@app.route("/image", methods = ["GET"])
-def image():
+@app.route("/file", methods = ["GET"])
+def view_file():
 
     id = request.args.get("i")
 
@@ -77,14 +71,14 @@ def image():
         return abort(400)  # haha you still cant use my website properly
 
     filename = ""
-    for file in listdir("data/images"):
+    for file in listdir("data/files"):
         if file.split(".")[0] == id:
             filename = file
 
     if not filename:
-        return abort(404)  # image doesnt exist
+        return abort(404)  # file doesnt exist
 
-    return send_from_directory("data/images", filename), 200
+    return send_from_directory("data/files", filename), 200
 
 # URL Shortener
 @app.route("/shortener", methods = ["GET", "POST"])
@@ -92,44 +86,36 @@ def shortener():
 
     # Render our shortener page
     if request.method == "GET":
-
         return render_template("pages/shortener.html"), 200
 
     # Let's do some shortening
     url = request.form.get("url")
 
     if not url:
-
         return abort(400)  # haha loSER
 
     elif "://" not in url:
-
         url = "http://" + url
 
     # Load our current URLs
     with open("data/urls.json", "r") as f:
-
         urls = loads(f.read())
 
     # Check if we already shortened this URL
     code = None
 
     for _ in urls:
-
         if urls[_] == url:
-
             code = _
 
     # Nope, we need to make a code
     if not code:
-
         code = "".join(choice(string.ascii_lowercase + string.digits) for _ in range(6))
 
     # Save our URL
     urls[code] = url
 
     with open("data/urls.json", "w") as f:
-
         f.write(dumps(urls, indent = 4))
 
     # Redirect to our homepage
@@ -196,7 +182,6 @@ def userInformation():
 def authenticateUser():
 
     username = request.form.get("username")
-
     password = request.form.get("password")
 
     if not username or not password:

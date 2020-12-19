@@ -30,15 +30,12 @@ def staticfilefromdir(dir, file):
 def staticfilefromtwodirs(dir, dir2, file):
 
     if dir not in listdir("app/static"):
-
         return abort(400)
 
     elif dir2 not in listdir(f"app/static/{dir}"):
-
         return abort(400)
 
     elif file not in listdir(f"app/static/{dir}/{dir2}"):
-
         return abort(400)
 
     return send_from_directory(f"app/static/{dir}/{dir2}", file)

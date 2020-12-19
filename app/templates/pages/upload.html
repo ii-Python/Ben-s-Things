@@ -7,11 +7,11 @@
             <div class = "col-3">
                 <form action = "/upload" method = "POST" enctype = "multipart/form-data">
                     <div class = "form-group">
-                        <label for = "image">Select a file to upload</label>
-                        <input type = "file" class = "form-control" id = "image" name = "image" required>
+                        <label for = "file">Select a file to upload</label>
+                        <input type = "file" class = "form-control" id = "file" name = "uploadfile" required>
                     </div>
                     <br>
-                    <button type = "submit" class = "btn btn-outline-secondary btn-block">Upload Image</button> <br>
+                    <button type = "submit" class = "btn btn-outline-secondary btn-block">Upload File</button> <br>
                     {% if error %}<p style = "color:red">{{ error }}</p>{% endif %}
                 </form>
             </div>
