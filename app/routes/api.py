@@ -5,35 +5,29 @@ from app import app
 from requests import get
 from random import choice
 
-from app.database import DB
 from json import loads, dumps
-
 from os import getenv, listdir
-from urllib.parse import urlparse
 
+from urllib.parse import urlparse
 from werkzeug.urls import url_parse
+
 from flask import render_template, redirect, url_for, jsonify, request, abort, session, send_from_directory
 
 # Return
 def return_data(code, data):
-
     return jsonify(code = code, data = data)
 
 # Routes
 @app.route("/api/<string:version>", methods = ["GET"])
 def redir(version):
-
     return redirect(url_for("fetchdocs", version = version))
 
 @app.route("/api/<string:version>/docs", methods = ["GET"])
 def fetchdocs(version):
 
     try:
-
         return render_template(f"api/{version}.html"), 200
-
     except FileNotFoundError:
-
         return return_data(404, {"message": "The specified API version does not exist."}), 404
 
 @app.route("/upload", methods = ["GET", "POST"])
@@ -51,16 +45,16 @@ def upload_file():
     except KeyError:
         return abort(400)
 
-    data = file.read()
-    size = len(data) / 1048576  # into megabytes
-
-    if size > 20:
-        return render_template("pages/upload.html", error = "Maximum upload size is 20 megabytes."), 200
+    # Check our maximum upload size without reading into RAM
+    size = app.core.locate_size(file)
+    if size > (20 * (1024 ** 2)):
+        return render_template("pages/upload.html", error = "Maximum upload size is 20MB."), 200
 
     id = "".join(choice(string.ascii_lowercase + string.digits) for _ in range(6))
-    open(f"data/files/{id}.{file.filename.split('.')[-1]}", "wb").write(data)
+    file.save(f"data/files/{id}.{file.filename.split('.')[-1]}")
 
-    return redirect(url_for("view_file", i = id))
+    # Redirect to our homepage
+    return redirect(url_for("index", message = f"File saved, permanent link: https://{url_parse(request.url).host}/file?i={id}"))
 
 @app.route("/file", methods = ["GET"])
 def view_file():
@@ -70,6 +64,7 @@ def view_file():
     if not id:
         return abort(400)  # haha you still cant use my website properly
 
+    # Locate filename
     filename = ""
     for file in listdir("data/files"):
         if file.split(".")[0] == id:
@@ -78,7 +73,8 @@ def view_file():
     if not filename:
         return abort(404)  # file doesnt exist
 
-    return send_from_directory("data/files", filename), 200
+    # Send content
+    return send_from_directory("data/files", filename, conditional = True), 200
 
 # URL Shortener
 @app.route("/shortener", methods = ["GET", "POST"])
@@ -110,7 +106,13 @@ def shortener():
 
     # Nope, we need to make a code
     if not code:
-        code = "".join(choice(string.ascii_lowercase + string.digits) for _ in range(6))
+
+        while True:
+            code = "".join(choice(string.ascii_lowercase + string.digits) for _ in range(6))
+
+            # Ensure we don't reassign a code
+            if code not in urls:
+                break
 
     # Save our URL
     urls[code] = url
@@ -126,12 +128,10 @@ def shorturl(url):
 
     # Load our current URLs
     with open("data/urls.json", "r") as f:
-
         urls = loads(f.read())
 
     # Nope, not a valid url
     if url not in urls:
-
         return abort(404)
 
     # It's valid, so redirect us
@@ -144,18 +144,13 @@ def login_api():
     redir = request.args.get("redir")
 
     if not redir:
-
-        abort(400)
+        return abort(400)
 
     elif "username" not in session:
-
         app.core.set_redirect("login_api", args = {"redir": redir})
-
         return redirect(url_for("login"))
 
-    db = DB()
-    code = db.get_token(session["username"])
-
+    code = app.db.get_token(session["username"])
     return render_template(
         "api/oauth.html",
         url = redir,
@@ -170,9 +165,7 @@ def userInformation():
     if not auth:
         return return_data(403, {"message": "No authorization provided."}), 403
 
-    db = DB()
-    user = db.get_user_by_token(auth)
-
+    user = app.db.get_user_by_token(auth)
     if not user:
         return return_data(403, {"message": "Invalid authorization."}), 403
 
@@ -187,12 +180,10 @@ def authenticateUser():
     if not username or not password:
         return return_data(400, {"message": "Username/password missing from request."}), 400
 
-    db = DB()
-
-    if not db.user_exists(username):
+    elif not app.db.user_exists(username):
         return return_data(403, {"message": "The specified username does not exist."}), 403
 
-    elif not db.checkpw(username, password):
+    elif not app.db.checkpw(username, password):
         return return_data(403, {"message": "The specified password is invalid."}), 403
 
     return return_data(200, {"message": "200 OK"}), 200

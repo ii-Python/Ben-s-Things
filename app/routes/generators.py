@@ -81,17 +81,14 @@ def genBadge():
 
 @app.route("/badge/generate", methods = ["GET"])
 def badgePage():
-
     return render_template("generators/badge.html"), 200
 
 @app.route("/embed", methods = ["GET"])
 def generateEmbed():
-
     return render_template("api/embed.html"), 200
 
 @app.route("/embed/generate", methods = ["GET"])
 def embedPage():
-
     return render_template("generators/embed.html"), 200
 
 @app.route("/oembed", methods = ["GET"])

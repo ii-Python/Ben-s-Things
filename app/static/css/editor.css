@@ -1,7 +1,6 @@
 body {
     overflow: hidden;
     background-color: #777;
-    font-family: 'Source Code Pro', monospace;
 }
 textarea {
     padding: 0;
@@ -9,6 +8,7 @@ textarea {
     border: none;
     font-size: 18px;
     background-color: transparent;
+    font-family: 'Roboto', sans-serif;
 }
 textarea:focus {
     border: none;

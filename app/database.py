@@ -11,8 +11,10 @@ from datetime import datetime
 class DB():
 
     def __init__(self):
+        self.load_db()
 
-        self.conn = sqlite3.connect("data/login.db")
+    def load_db(self):
+        self.conn = sqlite3.connect("data/login.db", check_same_thread = False)
         self.cursor = self.conn.cursor()
 
     def user_exists(self, username):
@@ -31,16 +33,30 @@ class DB():
 
         return None
 
+    def get_users(self):
+
+        users = []
+        for row in self.cursor.execute("SELECT * FROM users"):
+            users.append(row)
+
+        return users
+
     def delete_user(self, username):
 
         self.cursor.execute("DELETE FROM users WHERE username=?", (username,))
+        self.save()
 
     def register(self, username, password):
 
         hashed = bcrypt.hashpw(password.encode("UTF-8"), bcrypt.gensalt())
         token = secrets.token_urlsafe(75)
 
-        self.cursor.execute("INSERT INTO users VALUES (?,?,?,?)", (username, hashed.decode("UTF-8"), datetime.now().strftime("%D"), token))
+        admin = False
+        if not self.get_users():
+            admin = True
+
+        self.cursor.execute("INSERT INTO users VALUES (?,?,?,?,?)", (username, hashed.decode("UTF-8"), datetime.now().strftime("%D"), token, admin))
+        self.save()
 
     def checkpw(self, username, password):
 
@@ -73,7 +89,18 @@ class DB():
 
         return None
 
-    def close(self):
+    def is_admin(self, username):
 
+        for row in self.cursor.execute("SELECT * FROM users"):
+            if row[0] == username:
+                return row[4] == 1
+
+        return False  # Fallback
+
+    def save(self):
+        self.close()
+        self.load_db()
+
+    def close(self):
         self.conn.commit()
         self.conn.close()

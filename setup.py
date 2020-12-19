@@ -24,7 +24,8 @@ CREATE TABLE IF NOT EXISTS users (
     username text,
     password text,
     signup text,
-    token text
+    token text,
+    admin bool
 )
 """)
 

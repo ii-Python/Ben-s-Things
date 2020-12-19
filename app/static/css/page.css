@@ -37,3 +37,6 @@ i:hover {
 .dropdown-divider {
     border-top: 1px solid #343A40
 }
+.example {
+    width: 200px;
+}

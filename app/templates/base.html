@@ -49,8 +49,8 @@
               <a class = "nav-link text-secondary dropdown-toggle" data-toggle = "dropdown" href>Extras <span class = "caret"></span></a>
               <ul class = "dropdown-menu">
                 <li><a class = "nav-link dropdown-link" href = "/api/v1">API</a></li>
-                <li><a class = "nav-link dropdown-link" href = "/texty">Texty</a></li>
                 <li><a class = "nav-link dropdown-link" href = "/paint">Painting</a></li>
+                <li><a class = "nav-link dropdown-link" href = "/writer">Text Editor</a></li>
                 <li><a class = "nav-link dropdown-link" href = "/upload">File Uploader</a></li>
                 <li><a class = "nav-link dropdown-link" href = "/shortener">URL Shortener</a></li>
               </ul>
@@ -72,6 +72,11 @@
               </a>
               <ul class = "dropdown-menu dropdown-menu-right">
                 <li><a href = "/account" class = "nav-link cb-dpr dropdown-link">Account</a></li>
+                <!-- Admin panel -->
+                {% if app.db.is_admin(session["username"]) %}
+                  <li><a href = "/admin" class = "nav-link cb-dpr dropdown-link">Admin Panel</a></li>
+                {% endif %}
+                <!-- Logout button -->
                 <li><a href = "/logout" class = "nav-link cb-dpr cb-lgt">Logout</a></li>
               </ul>
             </li>

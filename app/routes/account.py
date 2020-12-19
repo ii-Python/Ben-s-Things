@@ -1,8 +1,6 @@
 # Modules
 import secrets
 from app import app
-
-from app.database import DB
 from flask import render_template, session, request, abort, redirect, url_for, make_response
 
 # Routes
@@ -35,23 +33,19 @@ def login():
             error = "Please fill out all fields."
         ), 400
 
-    db = DB()
-
-    if not db.user_exists(username):
+    if not app.db.user_exists(username):
 
         return render_template(
             "account/login.html",
             error = "No records match that username."
         ), 400
 
-    elif not db.checkpw(username, password):
+    elif not app.db.checkpw(username, password):
 
         return render_template(
             "account/login.html",
             error = "Invalid password."
         ), 403
-
-    db.close()
 
     session["username"] = username
 
@@ -93,17 +87,14 @@ def register():
             error = "Password needs to be at least 6 characters."
         ), 400
 
-    db = DB()
-
-    if db.user_exists(username):
+    if app.db.user_exists(username):
 
         return render_template(
             "account/register.html",
             error = "The specified username is already taken."
         ), 400
 
-    db.register(username, password)
-    db.close()
+    app.db.register(username, password)
 
     session["username"] = username
     return redirect(url_for("index"))
@@ -123,11 +114,7 @@ def delete_account():
         return redirect(url_for("login"))
 
     elif request.method == "POST":
-
-        db = DB()
-        db.delete_user(session["username"])
-        db.close()
-
+        app.db.delete_user(session["username"])
         return redirect(url_for("logout"))
 
     return render_template("account/delete.html"), 200

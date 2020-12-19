@@ -51,7 +51,6 @@ def startpage():
         ip = resp
     ), 200
 
-@app.route("/texty")
-def texty():
-
+@app.route("/writer")
+def writer():
     return render_template("pages/writer.html"), 200
