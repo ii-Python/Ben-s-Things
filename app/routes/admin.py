@@ -1,7 +1,11 @@
 # Modules
+import platform
 import subprocess
+
 from app import app
-from flask import render_template, session, redirect, url_for, request
+from getpass import getuser
+
+from flask import render_template, session, redirect, url_for, request, abort, jsonify
 
 # Shutdown server
 def shutdown_server():
@@ -39,3 +43,51 @@ def shutdown():
         return redirect(url_for("index"))
 
     shutdown_server()
+
+    return "Server is shutting down.", 200
+
+@app.route("/admin/terminal")
+def open_terminal():
+
+    if "username" not in session or not app.db.is_admin(session["username"]):
+        return redirect(url_for("index"))
+
+    return render_template(
+        "admin/terminal.html",
+        user = getuser(),
+        host = platform.node()
+    ), 200
+
+@app.route("/admin/execute", methods = ["POST"])
+def execute_command():
+
+    if "username" not in session or not app.db.is_admin(session["username"]):
+        return redirect(url_for("index"))
+
+    command = request.form.get("command")
+    output = ""
+
+    if command:
+        try:
+            out = subprocess.run(command.split(" "), stdout = subprocess.PIPE, stderr = subprocess.PIPE)
+            if out.stdout:
+                output += out.stdout.decode("utf-8")
+
+            if out.stderr:
+                if output:
+                    output += "\n"
+                output += out.stderr.decode("utf-8")
+
+        except FileNotFoundError:
+            output = f"bash: {command.split(' ')[0]}: command not found"  # Just like the old days
+
+    # Formatting
+    formats = {
+        "\n": "<br>",
+        "\t": "    "
+    }
+    for format in formats:
+        output = output.replace(format, formats[format])
+
+    # Send back to terminal
+    return jsonify(output = output), 200

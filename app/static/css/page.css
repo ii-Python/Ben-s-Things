@@ -31,12 +31,20 @@ i:hover {
 .dropdown-menu {
     background-color: #6C757D;
 }
-.dropdown-link {
-    color: #333;
-}
 .dropdown-divider {
     border-top: 1px solid #343A40
 }
 .example {
     width: 200px;
+}
+.dropdown-toggle {
+    cursor: pointer;
+}
+
+/** Elements that require the !important attribute due to bootstrap **/
+a.dropdown-link {
+    color: #333 !important;
+}
+a.dropdown-link:hover {
+    color: black !important;
 }

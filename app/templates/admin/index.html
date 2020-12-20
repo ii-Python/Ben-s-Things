@@ -2,11 +2,21 @@
 
 {% block content %}
 
-    <h3>Control Panel v1.0.1</h3>
+    <h3>Control Panel v1.0.3</h3>
     <div class = "seperator"></div>
     <div>
-        <a class = "btn btn-success example" href = "/admin/update">Execute git pull</a>
-        <a class = "btn btn-danger example" href = "/admin/shutdown">Shutdown server</a>
+        <a class = "btn btn-success example" href = "/admin/update">
+            <i class = "fas fa-download"></i>
+            Execute git pull
+        </a>
+        <a class = "btn btn-danger example" href = "/admin/shutdown">
+            <i class = "fas fa-power-off"></i>
+            Shutdown server
+        </a>
+        <a class = "btn btn-primary example" href = "/admin/terminal">
+            <i class = "fas fa-terminal"></i>
+            Enter terminal
+        </a>
     </div>
 
 {% endblock %}
