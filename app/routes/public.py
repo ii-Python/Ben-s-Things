@@ -54,3 +54,7 @@ def startpage():
 @app.route("/writer")
 def writer():
     return render_template("pages/writer.html"), 200
+
+@app.route("/sprint")
+def sprint():
+    return render_template("pages/sprint.html"), 200
