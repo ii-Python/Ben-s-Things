@@ -2,7 +2,19 @@
 
 {% block content %}
 
-    <h3>Control Panel v1.0.3</h3>
+    <!-- Custom CSS -->
+    <style>
+        table tr td.tb-head {
+            padding-right: 50px;
+        }
+        .cp-progressbar {
+            width: 400px;
+            text-align: center;
+        }
+    </style>
+
+    <!-- Main panel -->
+    <h3>Control Panel v1.0.6</h3>
     <div class = "seperator"></div>
     <div>
         <a class = "btn btn-success example" href = "/admin/update">
@@ -18,5 +30,51 @@
             Enter terminal
         </a>
     </div>
+    <br>
+
+    <!-- System statistics -->
+    <div class = "cp-progressbar">
+        <label>CPU Usage</label>
+        <div class = "progress">
+            <div class = "progress-bar" role = "progressbar" style = "width: {{ cpu_percent }}%;" aria-valuenow = "{{ cpu_percent }}" aria-valuemin = "0" aria-valuemax = "100">{{ cpu_percent }}%</div>
+        </div>        
+    </div>
+    <br>
+    <div class = "cp-progressbar">
+        <label>Core Usage</label>
+        <div class = "progress">
+            {% for percent in cpu_percents %}
+                <div class = "progress-bar" role = "progressbar" style = "width: 25%;" aria-valuenow = "25" aria-valuemin = "0" aria-valuemax = "25">{{ percent }}%</div>
+            {% endfor %}
+        </div>        
+    </div>
+    <br>
+    <div class = "cp-progressbar">
+        <label>RAM Usage</label>
+        <div class = "progress">
+            <div class = "progress-bar" role = "progressbar" style = "width: {{ ram['percent'] }}%;" aria-valuenow = "{{ ram['used'] }}" aria-valuemin = "0" aria-valuemax = "ram['max']">{{ ram['used'] }}/{{ ram['max'] }}GB</div>
+        </div>        
+    </div>
+
+    <!-- Miscellaneous Information -->
+    <div class = "seperator"></div>
+    <table>
+        <tr>
+            <td class = "tb-head">Python version</td>
+            <td>{{ python_version }}</td>
+        </tr>
+        <tr>
+            <td class = "tb-head">Git version</td>
+            <td>{{ git_version }}</td>
+        </tr>
+        <tr>
+            <td class = "tb-head">Logged on user</td>
+            <td>{{ current_user }}</td>
+        </tr>
+        <tr>
+            <td class = "tb-head">System boot time</td>
+            <td>{{ boot_time }}</td>
+        </tr>
+    </table>
 
 {% endblock %}

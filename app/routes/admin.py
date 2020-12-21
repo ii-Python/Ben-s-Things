@@ -1,9 +1,12 @@
 # Modules
+import psutil
 import platform
-import subprocess
 
+import subprocess
 from app import app
+
 from getpass import getuser
+from datetime import datetime
 
 from flask import render_template, session, redirect, url_for, request, abort, jsonify
 
@@ -24,7 +27,30 @@ def admin_page():
     if "username" not in session or not app.db.is_admin(session["username"]):
         return redirect(url_for("index"))
 
-    return render_template("admin/index.html"), 200
+    memory = psutil.virtual_memory()
+    memory = {
+        "used": round(memory.used / 1073741824, 2),
+        "max": round(memory.total / 1073741824, 2),
+        "percent": round(memory.percent)
+    }
+
+    cpu_percents = psutil.cpu_percent(percpu = True)
+
+    return render_template(
+        "admin/index.html",
+
+        # System stats
+        ram = memory,
+        cpu_percent = round(psutil.cpu_percent()),
+        cpu_length = 100 / len(cpu_percents),
+        cpu_percents = cpu_percents,
+
+        # Misc information
+        python_version = platform.python_version(),
+        git_version = subprocess.run(["git", "--version"], stdout = subprocess.PIPE).stdout.decode("utf-8"),
+        current_user = getuser(),
+        boot_time = datetime.fromtimestamp(psutil.boot_time()).strftime("%D %I:%M:%S %p")
+    ), 200
 
 @app.route("/admin/update")
 def git_pull():

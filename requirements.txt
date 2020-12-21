@@ -1,6 +1,7 @@
 flask
 flake8
 pillow
+psutil
 bcrypt
 waitress
 requests
