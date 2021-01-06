@@ -50,6 +50,22 @@
         </p>
       </div>
     </div>
+    <h5>
+      <a class = "endpnt-lnk text-light" data-toggle = "collapse" href = "#youtube" role = "button" aria-expanded = "false" aria-controls = "user">
+        /api/v1/yt
+        <span class = "badge badge-primary">GET</span>
+      </a>
+    </h5>
+    <div class = "collapse" id = "youtube">
+      <div class = "endpoint-data">
+        <p>Returns youtube search results related to the given query.</p>
+        <p>
+          Request: <code>/api/v1/yt?query=Hello%20adele</code>
+          <br>
+          Response: <code>{"results":[{"title": "...", "id": "...", "url": "..."}]}</code>
+        </p>
+      </div>
+    </div>
   </div>
 
 {% endblock %}

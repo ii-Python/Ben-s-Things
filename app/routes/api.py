@@ -8,8 +8,8 @@ from random import choice
 from json import loads, dumps
 from os import getenv, listdir
 
-from urllib.parse import urlparse
 from werkzeug.urls import url_parse
+from youtube_search import YoutubeSearch
 
 from flask import render_template, redirect, url_for, jsonify, request, abort, session, send_from_directory
 
@@ -187,3 +187,25 @@ def authenticateUser():
         return return_data(403, {"message": "The specified password is invalid."}), 403
 
     return return_data(200, {"message": "200 OK"}), 200
+
+@app.route("/api/v1/yt", methods = ["GET"])
+def search_youtube():
+
+    # Locate query
+    query = request.args.get("query")
+    if query is None:
+        return abort(400)
+
+    # Search youtube
+    resp = YoutubeSearch(query, max_results = 10).to_dict()
+    results = []
+
+    for r in resp:
+        results.append({"title": r["title"], "id": r["id"], "url": "https://youtube.com" + r["url_suffix"]})
+
+    # Format response
+    data = {
+        "results": results
+    }
+
+    return dumps(data), 200
