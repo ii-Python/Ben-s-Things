@@ -6,4 +6,5 @@ bcrypt
 waitress
 requests
 flask-gzip
+youtube-dl
 python-dotenv

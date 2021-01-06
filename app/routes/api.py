@@ -12,7 +12,7 @@ from json import loads, dumps
 from os import getenv, listdir
 
 from werkzeug.urls import url_parse
-from youtube_search import YoutubeSearch
+from ..utils.youtube import YoutubeSearch
 
 from flask import render_template, redirect, url_for, jsonify, request, abort, session, send_from_directory
 
@@ -197,7 +197,31 @@ def search_youtube():
     # Locate query
     query = request.args.get("query")
     if query is None:
-        return abort(400)
+        return return_data(400, "No query was specified to search for.")
+
+    # Locate our count
+    count = request.args.get("count", 10)
+    try:
+        count = int(count)
+        if count > 100:
+            return return_data(400, "The count value cannot be larger than 100.")
+
+        elif count < 1:
+            return return_data(400, "The count value needs to be at least 1.")
+
+    except ValueError:
+        return return_data(400, "The specified count value is invalid.")
+
+    # Fetch our page as well
+    page = request.args.get("page", 1)
+    try:
+        page = int(page)
+
+        if page < 1:
+            return return_data(400, "Page must at least be 1.")
+
+    except ValueError:
+        return return_data(400, "Specified page number is invalid.")
 
     # Check for a playlist
     results = None
@@ -215,7 +239,7 @@ def search_youtube():
 
     # Search youtube
     if results is None:
-        resp = YoutubeSearch(query, max_results = 10).to_dict()
+        resp = YoutubeSearch(query, max_results = count, page = page).to_dict()
         results = []
 
         for r in resp:
