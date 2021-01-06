@@ -1,9 +1,12 @@
 # Modules
 import string
-from app import app
+import youtube_dl
 
+from app import app
 from requests import get
+
 from random import choice
+from fnmatch import fnmatch
 
 from json import loads, dumps
 from os import getenv, listdir
@@ -196,12 +199,27 @@ def search_youtube():
     if query is None:
         return abort(400)
 
-    # Search youtube
-    resp = YoutubeSearch(query, max_results = 10).to_dict()
-    results = []
+    # Check for a playlist
+    results = None
+    if fnmatch(query, "*://www.youtube.com/playlist?list=*"):
 
-    for r in resp:
-        results.append({"title": r["title"], "id": r["id"], "url": "https://youtube.com" + r["url_suffix"]})
+        # Extract videos
+        videos = []
+        with youtube_dl.YoutubeDL({}) as ytdl:
+            info = ytdl.extract_info(query, download = False)
+
+        for vid in info["entries"]:
+            videos.append({"title": vid["title"], "id": vid["id"], "url": vid["webpage_url"]})
+
+        results = videos
+
+    # Search youtube
+    if results is None:
+        resp = YoutubeSearch(query, max_results = 10).to_dict()
+        results = []
+
+        for r in resp:
+            results.append({"title": r["title"], "id": r["id"], "url": "https://youtube.com" + r["url_suffix"]})
 
     # Format response
     data = {
