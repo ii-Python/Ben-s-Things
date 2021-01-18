@@ -251,7 +251,7 @@ def search_youtube():
         for vid in info["entries"]:
             videos.append({"title": vid["title"], "id": vid["id"], "url": vid["webpage_url"]})
 
-        results = videos
+        results = [videos]
         extra["isPlaylist"] = True
 
     # Search youtube
