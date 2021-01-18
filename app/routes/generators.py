@@ -1,12 +1,18 @@
 # Modules
 import io
+import sys
+
 from app import app
-
 from os import listdir
-from requests import get
 
-from PIL import Image, ImageDraw, ImageFont
+from requests import get
 from flask import make_response, request, abort, render_template
+
+try:
+    from PIL import Image, ImageDraw, ImageFont
+
+except ModuleNotFoundError:
+    pass
 
 # Routes
 @app.route("/text")

@@ -9,11 +9,12 @@ from random import choice
 from fnmatch import fnmatch
 
 from json import loads, dumps
+from datetime import datetime
+
 from os import getenv, listdir
-
 from werkzeug.urls import url_parse
-from ..utils.youtube import YoutubeSearch
 
+from ..utils.youtube import YoutubeSearch
 from flask import render_template, redirect, url_for, jsonify, request, abort, session, send_from_directory
 
 # Return
@@ -80,20 +81,10 @@ def view_file():
     return send_from_directory("data/files", filename, conditional = True), 200
 
 # URL Shortener
-@app.route("/shortener", methods = ["GET", "POST"])
-def shortener():
+def shorten_url(url):
 
-    # Render our shortener page
-    if request.method == "GET":
-        return render_template("pages/shortener.html"), 200
-
-    # Let's do some shortening
-    url = request.form.get("url")
-
-    if not url:
-        return abort(400)  # haha loSER
-
-    elif "://" not in url:
+    # Check protocol
+    if "://" not in url:
         url = "http://" + url
 
     # Load our current URLs
@@ -123,8 +114,28 @@ def shortener():
     with open("data/urls.json", "w") as f:
         f.write(dumps(urls, indent = 4))
 
+    # Return code
+    return code
+
+@app.route("/shortener", methods = ["GET", "POST"])
+def shortener():
+
+    # Render our shortener page
+    if request.method == "GET":
+        return render_template("pages/shortener.html"), 200
+
+    # Let's do some shortening
+    url = request.form.get("url")
+
+    if not url:
+        return abort(400)  # haha loSER
+
+    code = shorten_url(url)
+
     # Redirect to our homepage
     return redirect(url_for("index", message = f"URL Shortened! New URL: https://{url_parse(request.url).host}/{code}"))
+
+# TODO: Implement an API endpoint for the URL shortener
 
 @app.route("/<string:url>")
 def shorturl(url):
@@ -223,6 +234,11 @@ def search_youtube():
     except ValueError:
         return return_data(400, "Specified page number is invalid.")
 
+    extra = {
+        "isPlaylist": False
+    }
+    start = datetime.now()
+
     # Check for a playlist
     results = None
     if fnmatch(query, "*://www.youtube.com/playlist?list=*"):
@@ -236,6 +252,7 @@ def search_youtube():
             videos.append({"title": vid["title"], "id": vid["id"], "url": vid["webpage_url"]})
 
         results = videos
+        extra["isPlaylist"] = True
 
     # Search youtube
     if results is None:
@@ -247,7 +264,8 @@ def search_youtube():
 
     # Format response
     data = {
-        "results": results
-    }
+        "results": results,
+        "elapsed": round((datetime.now() - start).total_seconds() * 1000)
+    } | extra
 
     return dumps(data), 200
