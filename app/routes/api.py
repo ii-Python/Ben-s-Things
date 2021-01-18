@@ -234,25 +234,17 @@ def search_youtube():
     except ValueError:
         return return_data(400, "Specified page number is invalid.")
 
-    extra = {
-        "isPlaylist": False
-    }
     start = datetime.now()
 
     # Check for a playlist
     results = None
-    if fnmatch(query, "*://www.youtube.com/playlist?list=*"):
+    if fnmatch(query, "*://www.youtube.com/playlist?list=*"):\
 
-        # Extract videos
-        videos = []
-        with youtube_dl.YoutubeDL({}) as ytdl:
-            info = ytdl.extract_info(query, download = False)
+        playlist_id = query.split("?list=")[1]
+        if "&" in playlist_id:
+            playlist_id = playlist_id.split("&")[0]
 
-        for vid in info["entries"]:
-            videos.append({"title": vid["title"], "id": vid["id"], "url": vid["webpage_url"]})
-
-        results = [videos]
-        extra["isPlaylist"] = True
+        results = [{"url": query, "id": playlist_id, "isPlaylist": True}]
 
     # Search youtube
     if results is None:
@@ -260,12 +252,12 @@ def search_youtube():
         results = []
 
         for r in resp:
-            results.append({"title": r["title"], "id": r["id"], "url": "https://youtube.com" + r["url_suffix"]})
+            results.append({"title": r["title"], "id": r["id"], "url": "https://youtube.com" + r["url_suffix"], "isPlaylist": False})
 
     # Format response
     data = {
         "results": results,
         "elapsed": round((datetime.now() - start).total_seconds() * 1000)
-    } | extra
+    }
 
     return dumps(data), 200
