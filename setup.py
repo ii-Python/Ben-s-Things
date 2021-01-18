@@ -35,6 +35,7 @@ conn.close()
 
 # Create our URL database too
 open("data/urls.json", "w+").write("{}")
+open("data/keys.json", "w+").write("[]")
 
 # Setup our .env file
 ip_info = input("IPInfo.io API Key: ")

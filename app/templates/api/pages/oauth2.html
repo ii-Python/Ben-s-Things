@@ -1,0 +1,64 @@
+{% extends "api/base.html" %}
+
+{% block subheader %}OAuth2 & user authentication{% endblock %}
+
+{% block content %}
+
+    <!-- Introduction -->
+    <p>
+        This section covers how to use the APIs native OAuth2 support to authorize
+        and redirect users to external websites and access some of their data. This is helpful
+        if you are trying to get limited data including their username, signup date, etc.
+    </p>
+    <div class = "spacer"></div>
+
+    <!-- Endpoint list -->
+    <div class = "endpoint">
+        <h3>/api/oauth</h3>
+        <hr>
+        <div class = "details">
+            <p>
+                Required arguments: <b>redir</b> <br>
+                Example URL: <b>/api/oauth?redir=https://google.com</b>
+            </p>
+            <div class = "spacer"></div>
+            <p>
+                This endpoint will prompt the user with a "Continue to application?" page. If the user
+                confirms that they wish to proceed, the page will redirect them to the <b>redir</b> url with
+                a <b>code</b> attribute appended to the URL. This <b>code</b> attribute is a temporary access token that
+                can be used to grab user information.
+            </p>
+            <div class = "spacer"></div>
+            <p>
+                For more Python-inclined users, <b>code</b> is a generated <code>secrets.token_urlsafe(26)</code> token. <br>
+                If you already have a user token, check out <b>/api/user</b>.
+            </p>
+        </div>
+    </div>
+    <div class = "endpoint">
+        <h3>/api/user</h3>
+        <hr>
+        <div class = "details">
+            <p>
+                Required arguments: <b>code</b> <br>
+                Example URL: <b>/api/user?code=a1b2c3d4f5g6h7i8</b>
+            </p>
+            <div class = "spacer"></div>
+            <p>
+                When given a proper <b>code</b> (a user token), this endpoint will return data relating
+                to the user. If your <b>code</b> is proper, the return format will be like so:
+            </p>
+            <div class = "spacer"></div>
+            <code>
+                {
+                    "code": 200,
+                    "data": {
+                        "username": "...",
+                        "signupDate": "..."
+                    }
+                }
+            </code>
+        </div>
+    </div>
+
+{% endblock %}

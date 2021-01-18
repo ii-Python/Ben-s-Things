@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html prefix = "og: http://ogp.me/ns#">
+    <head>
+        <!-- Meta -->
+        <meta charset = "utf-8">
+        <meta name = "viewport" content = "width=device-width, initial-scale=1, shrink-to-fit=no">
+
+        <!-- Discord Meta -->
+        {% if request.args.get("title") %}<meta content = "{{ request.args.get('title') }}" property = "og:title">{% endif %}
+        {% if request.args.get("image") %}<meta content = "{{ request.args.get('image') }}" property = "og:image" />{% endif %}
+        {% if request.args.get("description") %}<meta content = "{{ request.args.get('description') }}" property = "og:description">{% endif %}
+        {% if request.args.get("color") %}<meta name = "theme-color" content = "#{{ request.args.get('color') }}">{% endif %}
+        {% if request.args.get("author") %}<link type = "application/json+oembed" href = "https://iipython.cf/oembed?author={{ request.args.get('author') }}" />{% endif %}
+        {% if request.args.get("url") %}<meta property = "og:url" content = "{{ request.args.get('url') }}" />{% endif %}
+
+        <!-- CSS -->
+        <link rel = "stylesheet" href = "/s/css/bootstrap.css">
+        <link rel = "stylesheet" href = "https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.14.0/css/all.min.css">
+
+        <link rel = "stylesheet" href = "/s/css/page.css">
+
+        <!-- Misc -->
+        <link rel = "icon" type = "image/png" href = "/s/favicon.png">
+
+        <title>Ben's Things</title>
+    </head>
+    <body>
+        <div align = "center" class = "master">
+            <h4>Hello!</h4>
+            <p>
+                This is an easy to use API for creating discord embeds. <br>
+                To send this embed in discord, just copy and paste the URL above.
+            </p>
+            <br>
+            <p>For more information, check the <a href = "//github.com/ii-Python/iiPython.cf/blob/master/app/routes/generators.py">GitHub page</a>.</p>
+            <p>To create your own embed, check out the <a href = "/embed/generate">embed generator</a>.</p>
+            <br>
+            <a href = "/" class = "btn btn-outline-secondary">Head to the Homepage</a>
+            <div class = "seperator"></div>
+        </div>
+        <footer>
+            <a href = "https://github.com/ii-Python/iiPython.cf">
+                <i class = "fab fa-github"></i>
+            </a>
+            <a data-toggle = "tooltip" data-placement = "top" title = "iiPython#0768">
+                <i class = "fab fa-discord"></i>
+            </a>
+            <a onclick = "confetti.start(1200, 50, 150);">
+                <i class = "fas fa-smile-wink"></i>
+            </a>
+        
+            </footer>
+        
+        <!-- JS -->
+        <script src = "//ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+        <!-- Relative JS -->
+        <script src = "/s/js/page.js"></script>
+        <script src = "/s/js/confetti.js"></script>
+        <script src = "/s/js/bootstrap.js"></script>
+    </body>
+</html>

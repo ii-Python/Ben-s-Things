@@ -91,7 +91,7 @@ def badgePage():
 
 @app.route("/embed", methods = ["GET"])
 def generateEmbed():
-    return render_template("api/embed.html"), 200
+    return render_template("api/ext/embed.html"), 200
 
 @app.route("/embed/generate", methods = ["GET"])
 def embedPage():

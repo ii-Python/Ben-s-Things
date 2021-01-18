@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang = "en">
+    <head>
+        <!-- Meta -->
+        <meta charset = "utf-8">
+        <meta name = "viewport" content = "width=device-width, initial-scale=1, shrink-to-fit=no">
+        <meta name = "theme-color" content = "#4285f4">
+
+        <!-- Discord Meta -->
+        <meta content = "API documentation" property = "og:title">
+        <meta content = "Ben's Site" property = "og:site_name">
+        <meta content = "/s/favicon.png" property = "og:image">
+
+        <!-- CSS -->
+        <link rel = "stylesheet" href = "/s/css/bootstrap.css">
+        <link rel = "stylesheet" href = "https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.14.0/css/all.min.css">
+
+        <style>
+            body {
+                color: white;
+                padding-top: 5px;
+                padding-left: 10px;
+                background-color: #061E3E;
+            }
+            #top {
+                margin-top: 25px;
+            }
+            p {
+                max-width: 650px !important;
+            }
+            .spacer {
+                padding-top: 15px;
+            }
+            hr {
+                border-color: white;
+            }
+            #content {
+                color: #afafaf;
+            }
+            h3 {
+                color: white;
+            }
+        </style>
+
+        <!-- Misc -->
+        <link rel = "icon" type = "image/png" href = "/s/favicon.png">
+
+        <title>API docs</title>
+    </head>
+    <body>
+        <!-- Mini navbar -->
+        <nav class = "navbar navbar-expand-lg navbar-light">
+            <div class = "collapse navbar-collapse">
+                <ul class = "navbar-nav mr-auto">
+                    <li class = "nav-item">
+                        <a class = "nav-link text-secondary" href = "/api/intro">Intro</a>
+                    </li>
+                    <li class = "nav-item">
+                        <a class = "nav-link text-secondary" href = "/api/generation">Images</a>
+                    </li>
+                    <li class = "nav-item">
+                        <a class = "nav-link text-secondary" href = "/api/oauth2">OAuth2</a>
+                    </li>
+                    <li class = "nav-item">
+                        <a class = "nav-link text-secondary" href = "/api/keys">API Keys</a>
+                    </li>
+                    <li class = "nav-item">
+                        <a class = "nav-link text-secondary" href = "/api/misc">Misc</a>
+                    </li>
+                </ul>
+                <ul class = "navbar-nav navbar-right">
+                    <li class = "nav-item">
+                        <a class = "nav-link text-secondary" href = "/"><i class = "fas fa-long-arrow-alt-left"></i> Back to site</a>
+                    </li>
+                </ul>
+            </div>
+        </nav>
+
+        <!-- Top header -->
+        <div id = "top">
+            <h2>iiPython API</h2>
+            <h5>{% block subheader %}{% endblock %}</h5>
+            <hr>
+        </div>
+
+        <!-- Content -->
+        <div id = "content">
+            {% block content %}{% endblock %}
+        </div>
+
+        <!-- JS -->
+        <script src = "//ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+        <!-- Relative JS -->
+        <script src = "/s/js/bootstrap.js"></script>
+    </body>
+</html>

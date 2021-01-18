@@ -1,0 +1,18 @@
+{% extends "api/base.html" %}
+
+{% block subheader %}Introduction page{% endblock %}
+
+{% block content %}
+
+    <!-- Introduction -->
+    <p>
+        Hello and welcome to the introduction for my API, wrapping most of the functionality of this website.
+        The API documentation is split up into various different pages depending on the subject at hand. For example,
+        if you wanted to learn more about OAuth2 authentication, you could check out <a href = "/api/oauth2">this page</a>.
+        The available categories are available via the navbar at the top of the page.
+        <div class = "spacer"></div>
+        Some subjects would include <a href = "/api/generation">image generation</a>, <a href = "/api/oauth2">OAuth2</a>,
+        <a href = "/api/keys">api keys</a>, and <a href = "/api/misc">other subjects</a>.
+    </p>
+
+{% endblock %}

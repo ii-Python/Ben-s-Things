@@ -1,0 +1,49 @@
+{% extends "api/base.html" %}
+
+{% block subheader %}Image generation/manipulation{% endblock %}
+
+{% block content %}
+
+    <!-- Introduction -->
+    <p>
+        This section covers how to use the API to produce images and manipulate
+        existing images. Please note that these endpoints <b>do not actually return any
+        data</b> and are only to be used in reference to images, meaning you should use these
+        URLs as if they are an existing image rather than making a GET request to one of them.
+    </p>
+    <div class = "spacer"></div>
+
+    <!-- Endpoint list -->
+    <div class = "endpoint">
+        <h3>/text</h3>
+        <hr>
+        <div class = "details">
+            <p>
+                Required arguments: <b>text</b> <br>
+                Example URL: <b>/text?text=Hello world!</b>
+            </p>
+            <div class = "spacer"></div>
+            <p>
+                This API endpoint takes the query argument <b>text</b> and returns an image
+                with that text in the middle of it. If the text is long, the API will adjust the font size accordingly.
+            </p>
+        </div>
+    </div>
+    <div class = "endpoint">
+        <h3>/badge</h3>
+        <hr>
+        <div class = "details">
+            <p>
+                Required arguments: <b>title</b>, <b>description</b>, <b>color</b> <br>
+                Example URL: <b>/badge?title=Example title&description=Example content&color=#126bf1</b>
+            </p>
+            <div class = "spacer"></div>
+            <p>
+                This API endpoint will construct a "badge" using the given <b>title</b>, <b>description</b> and <b>color</b>.
+                If no color is specified, then by default black will be used. The color can also optionally start with a hashtag although
+                it is not required.
+            </p>
+        </div>
+    </div>
+
+{% endblock %}
