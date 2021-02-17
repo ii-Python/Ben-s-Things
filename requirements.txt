@@ -1,4 +1,5 @@
 flask
+emoji
 flake8
 pillow
 psutil

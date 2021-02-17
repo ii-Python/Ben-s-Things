@@ -1,13 +1,14 @@
 # Modules
+import emoji
 import requests
+
 from app import app
-
 from fnmatch import fnmatch
+
 from datetime import datetime
-
 from json import dumps, loads
-from ..utils.youtube import YoutubeSearch
 
+from ..utils.youtube import YoutubeSearch
 from flask import render_template, redirect, url_for, jsonify, request, session, Response
 
 # Load API keys
@@ -174,13 +175,15 @@ def search_youtube():
 def convert_emoji():
 
     # Find emoji
-    emoji = request.args.get("emoji")
-    if emoji is None:
+    emoji_ = request.args.get("emoji")
+    if emoji_ is None:
         return jsonify(code = 400, data = {"message": "No emoji was specified."}), 400
 
     # Grab unicode format
     try:
-        unicode = emoji.encode("unicode_escape").decode("utf-8").split("000")[1]
+        emoji_ = emoji.emojize(emoji_, use_aliases = True)
+
+        unicode = emoji_.encode("unicode_escape").decode("utf-8").split("000")[1]
         url = f"https://twemoji.maxcdn.com/v/12.1.4/72x72/{unicode}.png"
 
     except (IndexError, UnicodeError):
