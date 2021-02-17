@@ -1,5 +1,5 @@
 # Modules
-import youtube_dl
+import requests
 from app import app
 
 from fnmatch import fnmatch
@@ -8,7 +8,7 @@ from datetime import datetime
 from json import dumps, loads
 from ..utils.youtube import YoutubeSearch
 
-from flask import render_template, redirect, url_for, jsonify, request, session
+from flask import render_template, redirect, url_for, jsonify, request, session, Response
 
 # Load API keys
 with open("data/keys.json", "r") as file:
@@ -169,3 +169,19 @@ def search_youtube():
     }
 
     return dumps(data), 200
+
+@app.route("/api/emoji", methods = ["GET"])
+def convert_emoji():
+
+    # Find emoji
+    emoji = request.args.get("emoji")
+    if emoji is None:
+        return jsonify(code = 400, data = {"message": "No emoji was specified."}), 400
+
+    # Grab unicode format
+    unicode = emoji.encode("unicode_escape").decode("utf-8").split("000")[1]
+    url = f"https://twemoji.maxcdn.com/v/12.1.4/72x72/{unicode}.png"
+    
+    # Return response
+    r = requests.get(url)
+    return Response(r.content, mimetype = "image/png"), 200
