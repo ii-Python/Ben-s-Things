@@ -179,8 +179,12 @@ def convert_emoji():
         return jsonify(code = 400, data = {"message": "No emoji was specified."}), 400
 
     # Grab unicode format
-    unicode = emoji.encode("unicode_escape").decode("utf-8").split("000")[1]
-    url = f"https://twemoji.maxcdn.com/v/12.1.4/72x72/{unicode}.png"
+    try:
+        unicode = emoji.encode("unicode_escape").decode("utf-8").split("000")[1]
+        url = f"https://twemoji.maxcdn.com/v/12.1.4/72x72/{unicode}.png"
+
+    except (IndexError, UnicodeError):
+        return jsonify(code = 400, data = {"message": "Invalid emoji provided."}), 400
     
     # Return response
     r = requests.get(url)
