@@ -45,5 +45,21 @@
             </p>
         </div>
     </div>
+    <div class = "endpoint">
+        <h3>/emoji</h3>
+        <hr>
+        <div class = "details">
+            <p>
+                Required arguments: <b>emoji</b> <br>
+                Example URL: <b>/emoji?emoji=🍌</b>
+            </p>
+            <div class = "spacer"></div>
+            <p>
+                This endpoint will turn any valid unicode emoji, provided in the <b>emoji</b> parameter, into a valid
+                PNG image via the twemoji CDN service. If the provided emoji is omitted or invalid, the endpoint will
+                return a 400 error respectively.
+            </p>
+        </div>
+    </div>
 
 {% endblock %}
