@@ -181,14 +181,22 @@ def convert_emoji():
 
     # Grab unicode format
     try:
-        emoji_ = emoji.emojize(emoji_, use_aliases = True)
+        emoji_ = emoji.emojize(emoji.demojize(emoji_), use_aliases = True)  # Basically a triple check
 
-        unicode = emoji_.encode("unicode_escape").decode("utf-8").split("000")[1]
+        # Grab unicode
+        unicode = emoji_.encode("unicode_escape").decode("utf-8").lower()
+        unicode = unicode[2:]
+
+        unicode = unicode.replace("000", "")
+
+        # Make request
         url = f"https://twemoji.maxcdn.com/v/12.1.4/72x72/{unicode}.png"
+        r = requests.get(url)
+        if r.status_code != 200:
+            raise ValueError  # No such emoji
 
-    except (IndexError, UnicodeError):
+    except (ValueError, IndexError, UnicodeError):
         return jsonify(code = 400, data = {"message": "Invalid emoji provided."}), 400
-    
+
     # Return response
-    r = requests.get(url)
     return Response(r.content, mimetype = "image/png"), 200
