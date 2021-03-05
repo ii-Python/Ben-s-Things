@@ -36,8 +36,12 @@ def upload_file():
     if size > (20 * (1024 ** 2)):
         return render_template("pages/upload.html", error = "Maximum upload size is 20MB."), 200
 
+    ext = file.filename.split(".")[-1]
+    if "." not in file.filename:
+        ext = "png"
+
     id = "".join(random.choice(string.ascii_lowercase + string.digits) for _ in range(6))
-    file.save(f"data/files/{id}.{file.filename.split('.')[-1]}")
+    file.save(f"data/files/{id}.{ext}")
 
     # Redirect to our homepage
     return redirect(url_for("index", message = f"File saved, permanent link: https://{url_parse(request.url).host}/file?i={id}"))
@@ -59,5 +63,6 @@ def view_file():
     if not filename:
         return abort(404)  # file doesnt exist
 
+    print(filename)
     # Send content
     return send_from_directory("data/files", filename, conditional = True), 200
