@@ -89,9 +89,12 @@
         <div class = "alert alert-success" role = "alert">{{ request.args.get("message") }}</div>
       {% endif %}
       {% block content %}{% endblock %}
-      <br>
-      <div class = "seperator"></div>
     </div>
+    <div class = "left-block">
+      {% block left_content %}{% endblock %}
+    </div>
+    <br>
+    <div class = "seperator"></div>
     <footer>
       <a href = "https://github.com/ii-Python/iiPython.cf">
         <i class = "fab fa-github"></i>

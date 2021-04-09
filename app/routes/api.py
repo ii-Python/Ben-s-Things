@@ -1,14 +1,16 @@
 # Modules
+import time
 import emoji
+
 import requests
-
 from app import app
+
 from fnmatch import fnmatch
-
 from datetime import datetime
-from json import dumps, loads
 
+from json import dumps, loads
 from ..utils.youtube import YoutubeSearch
+
 from flask import render_template, redirect, url_for, jsonify, request, session, Response
 
 # Load API keys
@@ -200,3 +202,26 @@ def convert_emoji():
 
     # Return response
     return Response(r.content, mimetype = "image/png"), 200
+
+
+# CLI routes
+@app.route("/api/cli/heartbeat", methods = ["GET"])
+def cli_heartbeat():
+
+    # Grab UTC timestamp
+    ts = request.args.get("ts")
+    if ts is None:
+        return jsonify(code = 400, data = {"message": "No timestamp provided."})
+
+    # Check timestamp
+    try:
+        ts = float(ts)
+
+    except ValueError:
+        return jsonify(code = 400, data = {"message": "Invalid UTC timestamp provided."})
+
+    # Grab difference
+    current_utc = time.time()
+    ts_diff = round((current_utc - ts) * 1000, 2)
+
+    return jsonify(code = 200, ping = ts_diff), 200

@@ -28,6 +28,11 @@ i:hover {
     padding-top: 10px;
     color: #FFF;
 }
+.left-block {
+    color: #999;
+    padding-top: 10px;
+    padding-left: 15px;
+}
 .dropdown-menu {
     background-color: #6C757D;
 }

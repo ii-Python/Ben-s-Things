@@ -12,7 +12,11 @@ def account():
         app.core.set_redirect("account")
         return redirect(url_for("login"))
 
-    return render_template("account/account.html"), 200
+    return render_template(
+        "account/account.html",
+        data = app.db.get_user_by_username(session["username"]),
+        round_dt = lambda x: str(x).split(" ")[0]
+    ), 200
 
 @app.route("/login", methods = ["GET", "POST"])
 def login():
@@ -62,7 +66,6 @@ def register():
     if request.method == "GET":
 
         if "username" in session:
-
             return redirect(url_for("index"))
 
         return render_template("account/register.html"), 200
@@ -74,21 +77,18 @@ def register():
         session["redir"] = request.args.get("redir")
 
     if not username or not password:
-
         return render_template(
             "account/register.html",
             error = "Please fill out all fields."
         ), 400
 
     elif len(password) < 6:
-
         return render_template(
             "account/register.html",
             error = "Password needs to be at least 6 characters."
         ), 400
 
     if app.db.user_exists(username):
-
         return render_template(
             "account/register.html",
             error = "The specified username is already taken."

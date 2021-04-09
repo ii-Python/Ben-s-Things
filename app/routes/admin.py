@@ -27,6 +27,7 @@ def admin_page():
     if "username" not in session or not app.db.is_admin(session["username"]):
         return redirect(url_for("index"))
 
+    # Grab OS info
     memory = psutil.virtual_memory()
     memory = {
         "used": round(memory.used / 1073741824, 2),
@@ -35,6 +36,13 @@ def admin_page():
     }
 
     cpu_percents = psutil.cpu_percent(percpu = True)
+
+    # Grab git version
+    try:
+        git_version = subprocess.run(["git", "--version"], stdout = subprocess.PIPE).stdout.decode("utf-8")
+
+    except OSError:
+        git_version = "not installed"
 
     return render_template(
         "admin/index.html",
@@ -47,7 +55,7 @@ def admin_page():
 
         # Misc information
         python_version = platform.python_version(),
-        git_version = subprocess.run(["git", "--version"], stdout = subprocess.PIPE).stdout.decode("utf-8"),
+        git_version = git_version,
         current_user = getuser(),
         boot_time = datetime.fromtimestamp(psutil.boot_time()).strftime("%D %I:%M:%S %p")
     ), 200
