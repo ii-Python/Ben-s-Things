@@ -1,13 +1,13 @@
 # iiPython.cf
-# The website for geese
+## The website for geese
 ===
 
-## Installation
-`git clone https://github.com/ii-Python/iiPython.cf`
-`python3 -m pip install -U -r reqs.txt`
+### Installation
+    - Clone the repo: `git clone https://github.com/ii-Python/iiPython.cf`
+    - Install requirements: `python3 -m pip install -U -r reqs.txt`
 
-## Running local
+### Running locally
 `python3 main.py --debug`
 
-## Deploying
+### Deploying
 `python3 main.py`
