@@ -1,9 +1,13 @@
 # iiPython.cf
-### Just my little personal website.
----
+# The website for geese
+===
 
-Make sure you install the dependencies: `python3 -m pip install -r requirements.txt`.
+## Installation
+`git clone https://github.com/ii-Python/iiPython.cf`
+`python3 -m pip install -U -r reqs.txt`
 
-To run this, use `python3 main.py`.
+## Running local
+`python3 main.py --debug`
 
-If you want Flask debug mode enabled, `python3 main.py --debug`.
+## Deploying
+`python3 main.py`
