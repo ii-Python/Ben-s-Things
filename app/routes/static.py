@@ -63,5 +63,6 @@ def view_file():
     if not filename:
         return abort(404)  # file doesnt exist
 
+    print(filename)
     # Send content
     return send_from_directory("data/files", filename, conditional = True), 200
